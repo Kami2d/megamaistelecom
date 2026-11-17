@@ -8,7 +8,7 @@ export function Combos() {
   const [featured, ...others] = combos
 
   return (
-    <section id="combos" className="bg-white py-24 sm:py-28">
+    <section id="combos" className="bg-mist py-24 sm:py-28">
       <Container>
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <SectionHeading
@@ -16,7 +16,7 @@ export function Combos() {
             title="Internet que vai além da conexão."
             description="Combine fibra óptica com soluções para segurança, saúde e família. As condições comerciais de cada combo são informadas no atendimento."
           />
-          <Reveal delay={120}>
+          <Reveal delay={100}>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
               Sob consulta · sem valores publicados
             </p>

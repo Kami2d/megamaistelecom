@@ -15,84 +15,94 @@ export function CoverageForm() {
   }
 
   return (
-    <div className="rounded-[24px] border border-ink-900/5 bg-white p-7 shadow-card sm:p-9">
-      <div className="mb-7 flex items-center gap-3">
-        <div className="grid h-11 w-11 place-items-center rounded-xl bg-blue-brand text-white">
-          <MapPin size={20} aria-hidden="true" />
-        </div>
-        <div>
-          <h3 className="font-display text-lg font-bold tracking-[-0.03em] text-ink-950">
-            Consulte sua região
-          </h3>
-          <p className="text-xs text-ink-500">Consulta demonstrativa de CEP</p>
-        </div>
-      </div>
+    <div className="relative overflow-hidden rounded-[2rem] bg-[radial-gradient(90%_80%_at_100%_0%,#1d56e0_0%,rgba(29,86,224,0)_55%),linear-gradient(160deg,#0a1a4c,#030a20)] p-7 text-white shadow-[0_45px_90px_-45px_rgba(8,30,100,0.75)] sm:p-10">
+      <div className="grid-technical pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 
-      <form onSubmit={handleSubmit} noValidate>
-        <label
-          htmlFor="cep"
-          className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-ink-600"
-        >
-          Digite seu CEP
-        </label>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            id="cep"
-            name="cep"
-            type="text"
-            inputMode="numeric"
-            autoComplete="postal-code"
-            maxLength={9}
-            placeholder="00000-000"
-            value={cep}
-            onChange={(event) => {
-              setCep(formatCep(event.target.value))
-              if (status !== 'idle') setStatus('idle')
-            }}
-            aria-invalid={status === 'error'}
-            aria-describedby="cep-feedback"
-            className={`min-w-0 flex-1 rounded-xl border bg-mist px-4 py-3.5 text-sm font-medium text-ink-950 outline-none transition-colors placeholder:text-ink-500/60 focus:border-blue-brand focus:bg-white focus:ring-2 focus:ring-blue-brand/15 ${
-              status === 'error' ? 'border-red-400' : 'border-line'
-            }`}
-          />
-          <button
-            type="submit"
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-brand px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-bright"
+      <div className="relative">
+        <div className="mb-8 flex items-center gap-3">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[linear-gradient(140deg,#1e6bff,#5aa6ff)] shadow-[0_12px_26px_-10px_rgba(30,107,255,0.9)]">
+            <MapPin size={21} aria-hidden="true" />
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-bold tracking-[-0.02em]">
+              Consulte sua região
+            </h3>
+            <p className="text-xs text-white/50">Consulta demonstrativa de CEP</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} noValidate>
+          <label
+            htmlFor="cep"
+            className="mb-2 block text-[11px] font-bold uppercase tracking-[0.16em] text-white/55"
           >
-            <Search size={16} aria-hidden="true" />
-            Consultar
-          </button>
-        </div>
+            Digite seu CEP
+          </label>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              id="cep"
+              name="cep"
+              type="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
+              maxLength={9}
+              placeholder="00000-000"
+              value={cep}
+              onChange={(event) => {
+                setCep(formatCep(event.target.value))
+                if (status !== 'idle') setStatus('idle')
+              }}
+              aria-invalid={status === 'error'}
+              aria-describedby="cep-feedback"
+              className={`field-input min-w-0 flex-1 px-4 py-3.5 text-sm font-medium ${
+                status === 'error' ? '!border-red-400' : ''
+              }`}
+            />
+            <button
+              type="submit"
+              className="cta-pill !min-h-[3.4rem] shrink-0 bg-white text-ink-900"
+              data-variant="light"
+              data-size="md"
+            >
+              Consultar
+              <Search size={16} aria-hidden="true" />
+            </button>
+          </div>
 
-        <div id="cep-feedback" className="mt-4 min-h-[48px]" aria-live="polite">
-          {status === 'error' && (
-            <p className="flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-              <AlertCircle size={17} className="mt-0.5 shrink-0" aria-hidden="true" />
-              Digite um CEP válido com 8 números, no formato 00000-000.
-            </p>
-          )}
-          {status === 'checked' && (
-            <div className="rounded-xl border border-blue-brand/15 bg-blue-brand/5 px-4 py-3">
-              <p className="flex items-start gap-2 text-sm font-medium text-ink-800">
-                <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-blue-brand" aria-hidden="true" />
-                CEP {cep} válido.
+          <div id="cep-feedback" className="mt-4 min-h-[48px]" aria-live="polite">
+            {status === 'error' && (
+              <p className="flex items-start gap-2 rounded-xl bg-red-500/15 px-4 py-3 text-sm text-red-200">
+                <AlertCircle size={17} className="mt-0.5 shrink-0" aria-hidden="true" />
+                Digite um CEP válido com 8 números, no formato 00000-000.
               </p>
-              <p className="mt-1.5 pl-6 text-xs leading-relaxed text-ink-500">
-                Este MVP não consulta a infraestrutura. A disponibilidade real
-                será confirmada pelo nosso atendimento.
-              </p>
-              <WhatsAppCta
-                message={`Olá! Meu CEP é ${cep}. Gostaria de consultar a disponibilidade de internet na minha região.`}
-                size="sm"
-                className="mt-4 w-full sm:w-auto"
-              >
-                Confirmar pelo WhatsApp
-                <ArrowRight size={14} aria-hidden="true" />
-              </WhatsAppCta>
-            </div>
-          )}
-        </div>
-      </form>
+            )}
+            {status === 'checked' && (
+              <div className="rounded-2xl bg-white/[0.08] px-4 py-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
+                <p className="flex items-start gap-2 text-sm font-medium text-white">
+                  <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-cyan-signal" aria-hidden="true" />
+                  CEP {cep} válido.
+                </p>
+                <p className="mt-1.5 pl-6 text-xs leading-relaxed text-white/50">
+                  Este MVP não consulta a infraestrutura. A disponibilidade real
+                  será confirmada pelo nosso atendimento.
+                </p>
+                <WhatsAppCta
+                  message={`Olá! Meu CEP é ${cep}. Gostaria de consultar a disponibilidade de internet na minha região.`}
+                  size="sm"
+                  className="mt-4 w-full sm:w-auto"
+                >
+                  Confirmar pelo WhatsApp
+                  <ArrowRight size={14} aria-hidden="true" />
+                </WhatsAppCta>
+              </div>
+            )}
+          </div>
+        </form>
+
+        <p className="mt-4 text-[11px] leading-relaxed text-white/35">
+          Atendimento comercial confirma endereço, disponibilidade e condições.
+        </p>
+      </div>
     </div>
   )
 }

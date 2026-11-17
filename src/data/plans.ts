@@ -10,6 +10,7 @@ export type Plan = {
   monthlyPrice: number
   punctualityPrice: number | null
   badge?: string
+  description: string
   benefits: string[]
   uploadMb: number | null
   routers: number | null
@@ -22,6 +23,7 @@ export const plans: Plan[] = [
     speedMb: 400,
     monthlyPrice: 99.9,
     punctualityPrice: null,
+    description: 'Para navegar, trabalhar e aproveitar sem travar.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
@@ -36,7 +38,8 @@ export const plans: Plan[] = [
     speedMb: 500,
     monthlyPrice: 119.9,
     punctualityPrice: null,
-    badge: 'Destaque',
+    badge: 'Mais escolhido',
+    description: 'Mais folga para dividir a conexão com quem você ama.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
@@ -51,6 +54,7 @@ export const plans: Plan[] = [
     speedMb: 600,
     monthlyPrice: 129.9,
     punctualityPrice: null,
+    description: 'Para vários dispositivos conectados ao mesmo tempo.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
@@ -65,6 +69,7 @@ export const plans: Plan[] = [
     speedMb: 800,
     monthlyPrice: 149.9,
     punctualityPrice: null,
+    description: 'Velocidade máxima para uma rotina digital intensa.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',

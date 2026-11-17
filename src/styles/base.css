@@ -5,18 +5,19 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
   }
 
   body {
     background-color: var(--color-mist);
-    color: var(--color-ink-900);
+    color: var(--color-ink-800);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: #b9e3fb;
+    background: var(--color-cyan-signal);
     color: var(--color-ink-950);
   }
 
@@ -25,13 +26,24 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-blue-bright);
+    outline: 2px solid var(--color-cyan-signal);
     outline-offset: 3px;
   }
 
   img {
     display: block;
     max-width: 100%;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
+  button,
+  input {
+    font: inherit;
   }
 
   @media (prefers-reduced-motion: reduce) {

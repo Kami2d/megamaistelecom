@@ -1,4 +1,4 @@
-import { ArrowUpRight, Instagram, MessageCircle } from 'lucide-react'
+import { ArrowRight, Instagram, MessageCircle } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { Container } from '../components/Container'
 import { FaqAccordion } from '../components/FaqAccordion'
@@ -8,31 +8,37 @@ import { SectionHeading } from '../components/SectionHeading'
 
 export function Faq() {
   return (
-    <section id="faq" className="bg-mist py-24 sm:py-28">
+    <section id="faq" className="bg-mist py-24 sm:py-32">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[0.78fr_1.22fr] lg:gap-24">
-          <div id="contato" className="scroll-mt-28">
+        <div className="grid gap-14 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
+          <div id="contato" className="scroll-mt-28 lg:sticky lg:top-28 lg:self-start">
             <SectionHeading
               eyebrow="Dúvidas frequentes"
-              title="Antes de contratar, tire suas dúvidas."
-              description="Reunimos as perguntas mais comuns sobre planos, instalação e atendimento."
+              title="As respostas que faltam para escolher sua internet."
+              description="Antes de contratar, entenda as opções disponíveis e consulte as condições para o seu endereço."
             />
 
             <Reveal delay={120}>
-              <div className="mt-9 rounded-[22px] border border-line bg-white p-6">
-                <p className="font-display text-lg font-semibold tracking-[-0.03em] text-ink-950">
+              <div className="mt-9 rounded-[1.6rem] bg-white p-6 shadow-card sm:p-7">
+                <p className="font-display text-xl font-bold tracking-[-0.02em] text-ink-950">
                   Ainda precisa de ajuda?
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-ink-500">
                   Nossa equipe responde suas perguntas e confirma as condições
                   disponíveis para o seu endereço.
                 </p>
+                <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-500">
+                  WhatsApp e telefone
+                </p>
+                <p className="mt-1 font-display text-2xl font-extrabold italic tracking-[-0.02em] text-ink-950">
+                  {siteConfig.contact.phone}
+                </p>
                 <WhatsAppCta
                   message="Olá! Tenho dúvidas sobre os planos da MEGA+ e gostaria de falar com a equipe."
                   className="mt-6 w-full"
                 >
-                  <MessageCircle size={16} aria-hidden="true" />
                   Falar no WhatsApp
+                  <MessageCircle size={16} aria-hidden="true" />
                 </WhatsAppCta>
                 <a
                   href={siteConfig.instagramUrl}
@@ -42,7 +48,7 @@ export function Faq() {
                 >
                   <Instagram size={16} aria-hidden="true" />
                   Ver Instagram oficial
-                  <ArrowUpRight size={14} aria-hidden="true" />
+                  <ArrowRight size={14} aria-hidden="true" />
                 </a>
               </div>
             </Reveal>

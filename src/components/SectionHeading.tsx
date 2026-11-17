@@ -21,18 +21,11 @@ export function SectionHeading({
 
   return (
     <Reveal className={`max-w-2xl ${alignment}`}>
-      <div className="mb-5 flex items-center gap-3">
-        <span className="h-px w-8 bg-blue-brand" aria-hidden="true" />
-        <p
-          className={`text-[11px] font-bold uppercase tracking-[0.24em] ${
-            isLight ? 'text-cyan-signal' : 'text-blue-brand'
-          }`}
-        >
-          {eyebrow}
-        </p>
-      </div>
+      <span className={`eyebrow-pill ${isLight ? '' : 'eyebrow-pill--dark'}`}>
+        {eyebrow}
+      </span>
       <h2
-        className={`font-display text-3xl font-bold leading-[1.12] tracking-[-0.04em] sm:text-4xl lg:text-[44px] ${
+        className={`mt-6 font-display text-[2rem] font-extrabold italic leading-[1.02] tracking-[-0.025em] sm:text-[2.75rem] lg:text-[3.5rem] ${
           isLight ? 'text-white' : 'text-ink-950'
         }`}
       >
@@ -41,7 +34,7 @@ export function SectionHeading({
       {description && (
         <p
           className={`mt-5 text-[15px] leading-relaxed sm:text-base ${
-            isLight ? 'text-white/65' : 'text-ink-500'
+            isLight ? 'text-white/60' : 'text-ink-500'
           }`}
         >
           {description}

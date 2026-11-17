@@ -29,25 +29,27 @@ export function About() {
         <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24">
           <Reveal>
             <div className="relative">
-              <div className="absolute -bottom-5 -left-5 h-40 w-40 rounded-[24px] border border-blue-brand/25" aria-hidden="true" />
-              <div className="relative overflow-hidden rounded-[26px]">
+              <div className="absolute -bottom-5 -left-5 h-40 w-40 rounded-[2rem] border-2 border-blue-brand/25" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-[2rem] shadow-card">
                 <img
                   src="/images/about-workspace.jpg"
                   alt="Ambiente de trabalho conectado"
                   className="h-[360px] w-full object-cover sm:h-[470px]"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/55 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4 rounded-2xl border border-white/15 bg-ink-950/80 px-5 py-4 text-white backdrop-blur-sm">
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_25%,rgba(2,7,22,0.8)_100%)]" />
+                <div className="absolute inset-x-6 bottom-6 flex items-center justify-between gap-4 rounded-2xl border border-white/15 bg-ink-950/80 px-5 py-4 text-white backdrop-blur-md">
                   <div>
-                    <p className="font-display text-lg font-bold tracking-[-0.03em]">
+                    <p className="font-display text-lg font-extrabold italic tracking-[-0.02em]">
                       MEGA<span className="text-cyan-signal">+</span>
                     </p>
                     <p className="mt-0.5 text-[11px] text-white/55">
                       {siteConfig.brand.tagline}
                     </p>
                   </div>
-                  <ArrowUpRight size={18} className="text-cyan-signal" aria-hidden="true" />
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-cyan-signal">
+                    <ArrowUpRight size={18} aria-hidden="true" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -67,18 +69,17 @@ export function About() {
               </p>
               <p className="mt-4 text-[15px] leading-relaxed text-ink-600">
                 Estamos presentes em {siteConfig.locations.slice(0, 3).join(', ')} e
-                região, com suporte técnico 24 horas conforme divulgado em nosso
-                Instagram oficial.
+                região, com atendimento sujeito à área de cobertura.
               </p>
 
               <div className="mt-10 space-y-5 border-t border-line pt-8">
                 {pillars.map(({ icon: Icon, title, description }) => (
                   <div key={title} className="flex items-start gap-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-mist-2 text-blue-brand">
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-mist-2 text-blue-brand">
                       <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
                     </div>
                     <div>
-                      <h3 className="font-display text-base font-semibold text-ink-950">
+                      <h3 className="font-display text-base font-bold tracking-[-0.02em] text-ink-950">
                         {title}
                       </h3>
                       <p className="mt-1 text-sm text-ink-500">{description}</p>

@@ -3,11 +3,12 @@ import { useEffect, useRef, type ReactNode } from 'react'
 type RevealProps = {
   children: ReactNode
   className?: string
+  role?: 'presentation'
   /** Delay in milliseconds, used to stagger groups of elements. */
   delay?: number
 }
 
-export function Reveal({ children, className = '', delay = 0 }: RevealProps) {
+export function Reveal({ children, className = '', role, delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export function Reveal({ children, className = '', delay = 0 }: RevealProps) {
   return (
     <div
       ref={ref}
+      role={role}
       className={`reveal ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >

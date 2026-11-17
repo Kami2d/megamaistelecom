@@ -1,145 +1,108 @@
-import {
-  ArrowRight,
-  Check,
-  Headset,
-  MapPin,
-  RadioTower,
-  Zap,
-} from 'lucide-react'
+import { ArrowRight, MapPin, ShieldCheck, Zap } from 'lucide-react'
 import { siteConfig } from '../data/site'
+import { plans } from '../data/plans'
 import { CtaLink } from '../components/CtaLink'
 import { Container } from '../components/Container'
 import { Reveal } from '../components/Reveal'
+import { SpeedRing } from '../components/SpeedRing'
 
-const signals = [
-  { icon: RadioTower, label: 'Fibra óptica' },
-  { icon: Headset, label: 'Suporte 24h' },
-  { icon: Zap, label: '400 a 800 MB' },
+const marqueeItems = [
+  ...plans.map((plan) => `${plan.speedMb} Mbps`),
+  'Suporte 24h',
+  'Fibra óptica',
 ]
 
 export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative overflow-hidden bg-ink-950 pb-20 pt-32 text-white sm:pb-24 lg:pb-32 lg:pt-40"
+      tabIndex={-1}
+      className="relative isolate overflow-hidden bg-ink-950 pb-0 pt-[140px] text-white lg:pt-[170px]"
     >
-      <div className="grid-technical pointer-events-none absolute inset-0 opacity-70" />
-      <div className="pointer-events-none absolute -left-40 top-10 h-[420px] w-[420px] rounded-full bg-blue-deep/25 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full bg-cyan-signal/10 blur-[110px]" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(120% 80% at 75% 0%, #0d2a78 0%, rgba(10,28,78,0) 55%), linear-gradient(180deg, #05102c 0%, #020716 100%)',
+        }}
+        aria-hidden="true"
+      />
+      <div className="grid-technical pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute -right-64 -top-64 h-[900px] w-[900px] rounded-full bg-[radial-gradient(circle,rgba(61,139,255,0.5),rgba(30,107,255,0.14)_40%,transparent_68%)]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -left-80 bottom-0 h-[700px] w-[700px] rounded-full bg-[radial-gradient(circle,rgba(30,107,255,0.3),transparent_65%)]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute right-[10%] top-[30%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,106,26,0.22),transparent_70%)]"
+        aria-hidden="true"
+      />
 
-      <Container className="relative grid items-center gap-14 lg:grid-cols-[1.04fr_0.96fr] lg:gap-20">
-        <Reveal>
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-2">
-            <span className="relative flex h-2 w-2">
-              <span className="signal-pulse absolute inline-flex h-full w-full rounded-full bg-cyan-signal" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-signal" />
+      <Container className="relative">
+        <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+          <Reveal>
+            <span className="eyebrow-pill">
+              Fibra óptica em {siteConfig.locations.slice(0, 2).join(' e ')} e região
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75">
-              Fibra óptica em São Luís e região
-            </span>
-          </div>
 
-          <h1 className="mt-8 max-w-[660px] font-display text-[42px] font-bold leading-[1.06] tracking-[-0.055em] sm:text-6xl lg:text-[68px]">
-            Uma conexão{' '}
-            <span className="text-cyan-signal">gigante</span> para transformar
-            seus dias.
-          </h1>
-
-          <p className="mt-7 max-w-[540px] text-base leading-relaxed text-white/65 sm:text-lg">
-            Internet fibra óptica de alta velocidade para você trabalhar,
-            estudar, assistir e aproveitar tudo sem limites.
-          </p>
-
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <CtaLink href="#planos" className="w-full sm:w-auto">
-              Conheça nossos planos
-              <ArrowRight size={17} aria-hidden="true" />
-            </CtaLink>
-            <CtaLink
-              href="#cobertura"
-              variant="outline-light"
-              className="w-full sm:w-auto"
-            >
-              <MapPin size={16} aria-hidden="true" />
-              Consulte sua cobertura
-            </CtaLink>
-          </div>
-
-          <ul className="mt-11 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-7">
-            {signals.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2 text-sm text-white/60">
-                <Icon size={16} className="text-cyan-signal" aria-hidden="true" />
-                {label}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={160}>
-          <div className="relative mx-auto max-w-[520px] lg:max-w-none">
-            <div className="pointer-events-none absolute -inset-6 rounded-[44px] bg-blue-brand/15 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-ink-900 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]">
-              <img
-                src="/images/hero-fiber.jpg"
-                alt="Infraestrutura tecnológica de fibra óptica"
-                className="h-[380px] w-full object-cover opacity-70 sm:h-[500px] lg:h-[540px]"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent" />
-
-              <svg
-                className="pointer-events-none absolute inset-0 h-full w-full"
-                viewBox="0 0 500 540"
-                fill="none"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M-20 430C120 360 170 250 500 90"
-                  stroke="rgba(63,201,238,0.5)"
-                  strokeWidth="1.5"
-                  className="fiber-track"
-                />
-                <path
-                  d="M-20 500C150 420 260 320 520 180"
-                  stroke="rgba(63,201,238,0.22)"
-                  strokeWidth="1"
-                  className="fiber-track"
-                />
-                <circle cx="398" cy="140" r="5" fill="#3FC9EE" />
-                <circle cx="398" cy="140" r="14" stroke="rgba(63,201,238,0.35)" />
-              </svg>
-
-              <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-3">
-                <div className="rounded-2xl border border-white/15 bg-ink-950/80 px-5 py-4 backdrop-blur-sm">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
-                    Velocidade máxima
-                  </p>
-                  <p className="mt-1 font-display text-3xl font-bold tracking-tight">
-                    800 <span className="text-cyan-signal">MB</span>
-                  </p>
-                </div>
-                <div className="hidden rounded-xl border border-cyan-signal/30 bg-cyan-signal/10 px-4 py-3 text-xs font-semibold text-cyan-signal sm:block">
-                  Fibra óptica
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-6 -left-3 hidden items-center gap-3 rounded-2xl border border-ink-900/5 bg-white px-5 py-3.5 text-ink-900 shadow-float sm:flex">
-              <Check size={16} className="text-blue-brand" aria-hidden="true" />
-              <span className="text-xs font-semibold">
-                Planos residenciais e empresariais
+            <h1 className="mt-8 max-w-[720px] font-display text-[clamp(2.9rem,6.1vw,5.9rem)] font-extrabold italic leading-[0.95] tracking-[-0.03em]">
+              <span className="bg-[linear-gradient(165deg,#fff_30%,#d6e9ff_55%,#7fd3ff_100%)] bg-clip-text text-transparent">
+                Sua conexão precisa acompanhar o seu ritmo.
               </span>
-            </div>
-          </div>
-        </Reveal>
-      </Container>
+            </h1>
 
-      <Container className="relative mt-20 lg:hidden">
-        <p className="flex items-center gap-2 text-xs text-white/40">
-          <MapPin size={14} aria-hidden="true" />
-          Atendimento em {siteConfig.locations.join(' · ')}
-        </p>
+            <p className="mt-7 max-w-[560px] text-base leading-relaxed text-white/60 sm:text-lg">
+              Internet fibra óptica de 400 a 800 Mbps para trabalhar, estudar,
+              assistir aos seus conteúdos favoritos e manter seu negócio
+              conectado. Consulte a cobertura no seu endereço.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <CtaLink href="#planos">
+                Encontrar meu plano
+                <ArrowRight size={17} aria-hidden="true" />
+              </CtaLink>
+              <CtaLink href="#cobertura" variant="outline-light">
+                Consultar cobertura
+                <MapPin size={17} aria-hidden="true" />
+              </CtaLink>
+            </div>
+
+            <ul className="mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-7">
+              {[
+                { icon: Zap, label: '400 a 800 Mbps' },
+                { icon: ShieldCheck, label: 'Suporte técnico 24h' },
+                { icon: MapPin, label: 'Atendimento no Maranhão' },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-center gap-2 text-[13px] text-white/55">
+                  <Icon size={15} className="text-cyan-signal" aria-hidden="true" />
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <SpeedRing />
+          </Reveal>
+        </div>
+
+        <div className="marquee relative mt-16 border-t border-cyan-signal/10 py-6 sm:mt-20">
+          <div className="marquee-track">
+            {[...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, index) => (
+              <span
+                key={`${item}-${index}`}
+                data-fill={index % 3 === 0}
+                data-accent={index % 5 === 4}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </Container>
     </section>
   )

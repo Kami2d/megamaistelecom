@@ -24,11 +24,11 @@ export function BrandLogo({
         src="/images/logotipo.png"
         alt=""
         aria-hidden="true"
-        className="h-10 w-10 shrink-0 object-contain transition-transform duration-300 group-hover:-translate-y-0.5"
+        className="h-9 w-9 shrink-0 object-contain transition-transform duration-300 group-hover:-translate-y-0.5"
       />
       <span className="leading-none">
         <span
-          className={`block font-display text-[22px] font-bold tracking-[-0.06em] ${textTone}`}
+          className={`block font-display text-[24px] font-extrabold italic leading-none tracking-[-0.05em] ${textTone}`}
         >
           MEGA<span className="text-cyan-signal">+</span>
         </span>

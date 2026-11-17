@@ -1,14 +1,22 @@
 /**
  * Single source of truth for brand, contact and commercial metadata.
- * Values marked as demonstrative must be confirmed with Mega Mais Telecom
- * before the site goes live. They can be overridden at build time through
- * environment variables (see .env.example) without editing this file.
+ *
+ * Contact details, units and CNPJ below were taken from the reference MVP that
+ * the client approved. Confirm them before publishing. Values can still be
+ * overridden at build time through environment variables (see .env.example).
  */
 const fromEnv = (key: string, fallback: string) => {
   const value = import.meta.env[key]
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
 }
 
+const configuredPortalUrl = fromEnv('VITE_CUSTOMER_PORTAL_URL', '#contato')
+const safePortalUrl = /^(#|https?:\/\/)/.test(configuredPortalUrl) ? configuredPortalUrl : '#contato'
+
+/**
+ * Legacy placeholder kept only as a guard: if an old deploy still sets this
+ * number explicitly, WhatsApp CTAs stay disabled until the real number is set.
+ */
 export const demoWhatsappPhone = '559900000000'
 
 export const siteConfig = {
@@ -19,35 +27,49 @@ export const siteConfig = {
     tagline: 'Conectando você ao futuro.',
     instagramHandle: '@megamais.telecom',
   },
-  // DEMONSTRATIVE default — set VITE_WHATSAPP_PHONE no deploy.
-  whatsappPhone: fromEnv('VITE_WHATSAPP_PHONE', demoWhatsappPhone),
+  whatsappPhone: fromEnv('VITE_WHATSAPP_PHONE', '5598992165127'),
   whatsappDefaultMessage:
-    'Olá! Vim pelo site e gostaria de conhecer os planos da MEGA+.',
-  // DEMONSTRATIVE default — set VITE_CUSTOMER_PORTAL_URL no deploy.
-  customerPortalUrl: fromEnv('VITE_CUSTOMER_PORTAL_URL', '#contato'),
+    'Olá! Vim pelo site da MEGA+ Telecom e gostaria de consultar a cobertura no meu endereço.',
+  customerPortalUrl: safePortalUrl,
   instagramUrl: 'https://www.instagram.com/megamais.telecom/',
-  // Regions published in the official Instagram bio.
-  locations: ['São Luís', 'Rosário', 'Barreirinhas', 'PJ-MA'],
-  // Not published in the reference material — kept editable and shown as pending.
+  cnpj: '46.434.669/0001-92',
+  locations: ['Rosário', 'São Luís', 'Codó', 'São João Batista'],
+  units: [
+    {
+      name: 'Rosário · sede',
+      address: 'Rua Santa Luzia, 158, Centro, Rosário – MA, 65150-000',
+    },
+    {
+      name: 'São Luís',
+      address: 'R. Principal, nº 05, Cruzeiro de Santa Bárbara, São Luís – MA, 65059-815',
+    },
+    {
+      name: 'Codó',
+      address: 'Av. Cristóvão Colombo, Trizidela, Codó – MA, 65400-000',
+    },
+    {
+      name: 'São João Batista',
+      address: 'Maranhão',
+    },
+  ],
   contact: {
-    phone: null as string | null,
+    phone: '(98) 99216-5127',
     email: null as string | null,
     address: null as string | null,
   },
   navigation: [
-    { label: 'Início', href: '#inicio' },
     { label: 'Planos', href: '#planos' },
-    { label: 'Combos', href: '#combos' },
-    { label: 'Sobre nós', href: '#sobre' },
+    { label: 'Simulador', href: '#simulador' },
+    { label: 'Diferenciais', href: '#diferenciais' },
+    { label: 'Como contratar', href: '#como-contratar' },
     { label: 'Cobertura', href: '#cobertura' },
-    { label: 'Status dos Serviços', href: '#status' },
-    { label: 'Teste de velocidade', href: '#velocidade' },
-    { label: 'Contato', href: '#contato' },
+    { label: 'Dúvidas', href: '#faq' },
+    { label: 'Status', href: '#status' },
   ],
 } as const
 
 export type SiteConfig = typeof siteConfig
 
-/** False while the demo number is in use, so CTAs never open wa.me. */
+/** False only when the legacy placeholder is explicitly configured. */
 export const isWhatsAppConfigured =
   siteConfig.whatsappPhone.replace(/\D/g, '') !== demoWhatsappPhone

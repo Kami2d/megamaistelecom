@@ -36,7 +36,6 @@ export async function measureDownload(
   onProgress: (progress: ThroughputProgress) => void,
   signal?: AbortSignal,
 ): Promise<number> {
-  const start = performance.now()
   const response = await fetch(withCacheBuster(speedTestConfig.payloadUrl), {
     cache: 'no-store',
     signal,
@@ -44,7 +43,15 @@ export async function measureDownload(
 
   if (!response.ok) throw new Error('Falha ao baixar o arquivo de teste')
 
-  const total = Number(response.headers.get('content-length')) || speedTestConfig.payloadBytes
+  const contentType = response.headers.get('content-type') ?? ''
+  const declaredLength = Number(response.headers.get('content-length'))
+  if (contentType.includes('text/html')) throw new Error('Arquivo de teste indisponível')
+  if (declaredLength && Math.abs(declaredLength - speedTestConfig.payloadBytes) > speedTestConfig.payloadBytes * 0.1) {
+    throw new Error('Arquivo de teste inválido')
+  }
+
+  const total = declaredLength || speedTestConfig.payloadBytes
+  const start = performance.now()
   let bytes = 0
 
   if (response.body) {
@@ -60,6 +67,8 @@ export async function measureDownload(
     bytes = buffer.byteLength
     onProgress({ bytes, total })
   }
+
+  if (bytes < speedTestConfig.payloadBytes * 0.5) throw new Error('Arquivo de teste incompleto')
 
   const seconds = (performance.now() - start) / 1000
   if (seconds <= 0) return 0

@@ -1,28 +1,29 @@
-/* Design tokens extracted from the official MEGA+ Instagram visual language:
-   deep navy field, electric blue, cyan signal and warm secondary highlight. */
+/* Design system — deep navy field, electric blue, cyan signal and warm orange
+   accent. Display type is Saira italic; body type is Onest. */
 @theme {
-  --color-ink-950: #050d20;
-  --color-ink-900: #08152e;
-  --color-ink-800: #0d2145;
-  --color-ink-700: #15325f;
-  --color-ink-600: #20456f;
-  --color-ink-500: #355b86;
+  --color-ink-950: #020716;
+  --color-ink-900: #05102c;
+  --color-ink-800: #0a1c4e;
+  --color-ink-700: #123a78;
+  --color-ink-600: #1b3f72;
+  --color-ink-500: #55627f;
 
-  --color-blue-brand: #1467e8;
-  --color-blue-bright: #2b8bf5;
+  --color-blue-brand: #1e6bff;
+  --color-blue-bright: #3d8bff;
   --color-blue-deep: #0b3fa8;
-  --color-cyan-signal: #3fc9ee;
-  --color-coral-accent: #f28a5c;
 
-  --color-mist: #f5f8fd;
-  --color-mist-2: #eaf1fa;
-  --color-line: #dbe5f2;
+  --color-cyan-signal: #62cbff;
+  --color-coral-accent: #ff6a1a;
+  --color-amber-accent: #ffa13d;
 
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system,
-    'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', ui-sans-serif,
-    system-ui, sans-serif;
+  --color-mist: #eef3fb;
+  --color-mist-2: #e2eaf7;
+  --color-line: #d8e2f0;
 
-  --shadow-card: 0 18px 50px -28px rgba(8, 26, 64, 0.38);
-  --shadow-float: 0 22px 60px -18px rgba(5, 20, 50, 0.45);
+  --font-sans: 'Onest', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-display: 'Saira', 'Onest', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 30px 60px -36px rgba(10, 28, 78, 0.45);
+  --shadow-float: 0 30px 70px -30px rgba(2, 7, 22, 0.75);
 }

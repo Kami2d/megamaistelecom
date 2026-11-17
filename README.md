@@ -3,6 +3,12 @@
 Landing page institucional e comercial da Mega Mais Telecom, construída com
 React + TypeScript + Tailwind CSS + Lucide React.
 
+O redesenho foi inspirado no MVP de referência que o cliente aprovou
+(https://vitordesigner.com.br/giga/): linguagem visual de azul marinho profundo,
+azul elétrico e ciano como cor de sinal, com acento em laranja. A tipografia
+combina Saira em itálico para os títulos de destaque (display) e Onest para o
+corpo do texto.
+
 ## Executar
 
 ```bash
@@ -25,13 +31,13 @@ O projeto é uma aplicação **Vite estática**, sem backend. O arquivo
    variáveis listadas em `.env.example` para trocar os dados demonstrativos sem
    editar código:
    - `VITE_WHATSAPP_PHONE` — número comercial em formato internacional, sem `+`.
+     Se vazia, o site usa o número padrão `5598992165127` definido em
+     `src/data/site.ts`. Definir a variável sobrescreve esse número.
    - `VITE_CUSTOMER_PORTAL_URL` — URL ou âncora da área do cliente.
 
-   Enquanto `VITE_WHATSAPP_PHONE` não for definido (ou continuar com o número
-   demonstrativo), **nenhum link `wa.me` é gerado**: os CTAs aparecem
-   desabilitados como “Em breve”, o botão flutuante fica oculto e o rodapé/menu
-   mobile mostram “WhatsApp em breve”. Ao configurar um número real e
-   republicar, todos os CTAs voltam ao normal automaticamente.
+   Com o número padrão, os CTAs de WhatsApp (links `wa.me`, botão flutuante e
+   contato do rodapé/menu mobile) já ficam **ativos por padrão**. Para usar outro
+   número, configure `VITE_WHATSAPP_PHONE` e republicar.
 
 5. Clique em **Deploy**.
 
@@ -48,46 +54,69 @@ npm run build
 npm run preview
 ```
 
-> **Antes de ir ao ar:** substitua os demais valores demonstrativos em
-> `src/data/` (preços, regiões, telefone, e-mail e endereço) e confirme os dados
-> da Central de Status. As variáveis acima cobrem apenas WhatsApp e área do
-> cliente. As rotas usam hash (`#status`), por isso não há 404 em navegação
-> direta; o rewrite em `vercel.json` cobre outros caminhos.
+> **Antes de ir ao ar:** confirme os dados de contato e da empresa obtidos do
+> MVP de referência — número de WhatsApp/telefone, CNPJ `46.434.669/0001-92` e
+> unidades em Rosário, São Luís, Codó e São João Batista. Confira também os
+> catálogos em `src/data/` (planos, combos, regiões, FAQ e benefícios) e os dados
+> da Central de Status. As variáveis acima cobrem
+> apenas WhatsApp e área do cliente. As rotas usam hash (`#status`), por isso não
+> há 404 em navegação direta; o rewrite em `vercel.json` cobre outros caminhos.
 
 ## Organização
 
 ```
 src/
   styles/       CSS mestre e camadas (tokens, base, componentes)
-  data/         Todo o conteúdo editável (planos, combos, FAQ, benefícios, config)
+  data/         Todo o conteúdo editável (planos, combos, FAQ, objeções, benefícios, status, speed test, config)
   lib/          Formatadores, helper do WhatsApp e lógica do speed test
+  context/      Estado compartilhado de seleção de plano
   components/   Componentes reutilizáveis
   sections/     Seções da página
+  pages/        Página da Central de Status
+  services/     Provider de status
 public/images/  Imagens locais usadas no site
 public/speedtest/ Arquivo de 2 MB usado na medição de download
 ```
 
 ## Identidade visual
 
-A paleta foi extraída das publicações do Instagram oficial
-(`@megamais.telecom`): azul marinho profundo, azul elétrico e ciano como cor de
-sinal, com acentos secundários ocasionais. O logotipo é uma marca tipográfica
-editável (`MEGA+`) em `src/components/BrandLogo.tsx`. O site atual da empresa
+A linguagem visual do redesenho usa azul marinho profundo como fundo, azul
+elétrico e ciano como cores de sinal e laranja como acento (tokens em
+`src/styles/theme.css`). Os títulos de destaque usam Saira em itálico e o corpo
+usa Onest, carregados em `index.html`. O logotipo é híbrido: uma imagem local
+(`logotipo.png`) ao lado da marca tipográfica editável (`MEGA+`), montada em
+`src/components/BrandLogo.tsx`. O layout foi inspirado no
+MVP de referência https://vitordesigner.com.br/giga/; o site atual da empresa
 não foi usado como referência de design.
+
+## Seções da página
+
+A home (`src/App.tsx`) reúne, nesta ordem: Hero, Planos, Simulador, Diferenciais,
+Combos, Objeções, Como contratar, Cobertura, Speed test, Sobre, Dúvidas (FAQ) e
+uma CTA final reforçada. Os componentes ficam em `src/sections/`.
+
+O redesenho acrescentou **Simulador**, **Diferenciais**, **Objeções** e
+**Como contratar**, além da **CTA final** mais forte e do wordmark gigante
+"MEGA+" no rodapé (`giant-wordmark` em `src/components/Footer.tsx`). O **speed
+test** e a página de **status** (detalhados abaixo) permanecem disponíveis.
 
 ## Conteúdo demonstrativo — confirmar antes de publicar
 
 Todos os dados comerciais ficam centralizados em `src/data/`:
 
-- `site.ts` — número de WhatsApp e URL da área do cliente são demonstrativos,
-  mas podem ser sobrescritos por `VITE_WHATSAPP_PHONE` e
-  `VITE_CUSTOMER_PORTAL_URL`; enquanto o número demonstrativo estiver ativo,
-  os CTAs de WhatsApp ficam em estado “Em breve” (`isWhatsAppConfigured` em
-  `src/data/site.ts`); telefone, e-mail e endereço estão como `null` porque não
-  foram informados.
-- `plans.ts` — preços de catálogo dos quatro planos. O campo
-  `punctualityPrice` existe para manter separado o preço com desconto por
-  pontualidade, mas está `null` porque o valor não foi fornecido.
+- `site.ts` — o número de WhatsApp padrão é `5598992165127` e a URL da área do
+  cliente é `#contato`; ambos podem ser sobrescritos por `VITE_WHATSAPP_PHONE` e
+  `VITE_CUSTOMER_PORTAL_URL`. Com o número padrão, os CTAs de WhatsApp já ficam
+  ativos (`isWhatsAppConfigured` em `src/data/site.ts`). O número de
+  WhatsApp/telefone, o CNPJ `46.434.669/0001-92` e as unidades em Rosário, São
+  Luís, Codó e São João Batista foram obtidos do MVP de referência e **precisam
+  ser confirmados** antes da publicação.
+- `plans.ts` — catálogo com os planos de 400, 500, 600 e 800 Mbps (R$ 99,90,
+  R$ 119,90, R$ 129,90 e R$ 149,90 por mês). O campo `punctualityPrice` existe
+  para manter separado o preço com desconto por pontualidade, mas permanece
+  `null` porque o valor não foi fornecido.
+- `objections.ts` — perguntas de objeções exibidas antes da FAQ, com respostas
+  genéricas que não inventam políticas contratuais.
 - `combos.ts` — combos sem valores comerciais; CTAs abrem o WhatsApp com
   mensagem pré-preenchida.
 - `faq.ts` — respostas que não inventam políticas contratuais.
@@ -95,7 +124,7 @@ Todos os dados comerciais ficam centralizados em `src/data/`:
 
 ## Central de Status
 
-Página dedicada acessível por `#status` (menu “Status dos Serviços”). A rota é
+Página dedicada acessível por `#status` (item “Status” do menu). A rota é
 controlada em `src/App.tsx` sem adicionar dependências de roteamento.
 
 - Dados e rótulos: `src/data/status.ts`

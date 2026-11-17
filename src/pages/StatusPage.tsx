@@ -57,15 +57,13 @@ export function StatusPage() {
         <div className="pointer-events-none absolute -right-32 -top-24 h-80 w-80 rounded-full bg-blue-brand/20 blur-[100px]" />
         <Container className="relative">
           <Reveal>
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-cyan-signal">
-              Transparência e atendimento
-            </p>
-            <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+            <span className="eyebrow-pill">Transparência e atendimento</span>
+            <h1 className="mt-6 font-display text-4xl font-extrabold italic tracking-[-0.035em] sm:text-5xl lg:text-6xl">
               Central de Status
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65">
-              Consulte a disponibilidade dos principais serviços e plataformas
-              da internet em tempo real.
+              Veja como a Central de Status apresenta a disponibilidade dos
+              principais serviços e plataformas da internet.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">

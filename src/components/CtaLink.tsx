@@ -1,22 +1,18 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
 
-type Variant = 'primary' | 'outline-light' | 'outline-dark' | 'light' | 'dark'
+type Variant = 'primary' | 'blue' | 'outline-light' | 'outline-dark' | 'light' | 'dark'
 type Size = 'md' | 'sm'
 
 const variants: Record<Variant, string> = {
   primary:
-    'bg-blue-brand text-white shadow-[0_14px_30px_-14px_rgba(20,103,232,0.95)] hover:bg-blue-bright hover:shadow-[0_18px_34px_-14px_rgba(43,139,245,0.9)]',
+    'text-white bg-[linear-gradient(100deg,#ff5a10,#ff6a1a_45%,#ff8a2a)] shadow-[0_14px_34px_-12px_rgba(255,106,26,0.7),inset_0_1px_0_rgba(255,255,255,0.35)] hover:shadow-[0_20px_44px_-14px_rgba(255,106,26,0.85),inset_0_1px_0_rgba(255,255,255,0.35)]',
+  blue: 'text-white bg-[linear-gradient(100deg,#1559f0,#1e6bff_50%,#3f8cff)] shadow-[0_14px_34px_-12px_rgba(30,107,255,0.75),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_20px_44px_-14px_rgba(30,107,255,0.85)]',
   'outline-light':
-    'border border-white/25 text-white hover:border-cyan-signal/70 hover:bg-white/10',
+    'text-white bg-white/[0.06] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.22)] hover:bg-white/[0.12] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.4)]',
   'outline-dark':
-    'border border-ink-900/15 bg-white text-ink-900 hover:border-blue-brand/45 hover:bg-mist-2',
-  light: 'bg-white text-ink-950 hover:bg-cyan-signal',
-  dark: 'bg-ink-950 text-white hover:bg-ink-800',
-}
-
-const sizes: Record<Size, string> = {
-  md: 'px-6 py-3.5 text-sm',
-  sm: 'px-5 py-2.5 text-xs',
+    'bg-white text-ink-900 shadow-[inset_0_0_0_1px_rgba(10,28,78,0.14)] hover:bg-mist-2 hover:shadow-[inset_0_0_0_1px_rgba(30,107,255,0.4)]',
+  light: 'bg-white text-ink-900 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.55)] hover:bg-cyan-signal',
+  dark: 'bg-ink-950 text-white shadow-[0_18px_40px_-18px_rgba(2,7,22,0.65)] hover:bg-ink-800',
 }
 
 type CtaLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -36,7 +32,8 @@ export function CtaLink({
   title,
   ...props
 }: CtaLinkProps) {
-  const classes = `inline-flex items-center justify-center gap-2.5 rounded-xl font-semibold tracking-[-0.01em] transition-all duration-300 active:translate-y-px ${sizes[size]} ${variants[variant]} ${className}`
+  const classes = `cta-pill ${variants[variant]} ${className}`
+  const dataProps = { 'data-variant': variant, 'data-size': size }
 
   if (disabled) {
     return (
@@ -44,7 +41,9 @@ export function CtaLink({
         type="button"
         disabled
         title={title}
+        aria-label={props['aria-label']}
         className={`${classes} cursor-not-allowed opacity-60`}
+        {...dataProps}
       >
         {children}
       </button>
@@ -52,7 +51,7 @@ export function CtaLink({
   }
 
   return (
-    <a {...props} title={title} className={classes}>
+    <a {...props} {...dataProps} title={title} className={classes}>
       {children}
     </a>
   )
