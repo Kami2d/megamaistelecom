@@ -1,0 +1,28 @@
+/* Design tokens extracted from the official MEGA+ Instagram visual language:
+   deep navy field, electric blue, cyan signal and warm secondary highlight. */
+@theme {
+  --color-ink-950: #050d20;
+  --color-ink-900: #08152e;
+  --color-ink-800: #0d2145;
+  --color-ink-700: #15325f;
+  --color-ink-600: #20456f;
+  --color-ink-500: #355b86;
+
+  --color-blue-brand: #1467e8;
+  --color-blue-bright: #2b8bf5;
+  --color-blue-deep: #0b3fa8;
+  --color-cyan-signal: #3fc9ee;
+  --color-coral-accent: #f28a5c;
+
+  --color-mist: #f5f8fd;
+  --color-mist-2: #eaf1fa;
+  --color-line: #dbe5f2;
+
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', ui-sans-serif,
+    system-ui, sans-serif;
+
+  --shadow-card: 0 18px 50px -28px rgba(8, 26, 64, 0.38);
+  --shadow-float: 0 22px 60px -18px rgba(5, 20, 50, 0.45);
+}
