@@ -101,7 +101,7 @@ export function Simulator() {
                     <p className="text-sm font-medium text-white/80">
                       Quantas pessoas dividem a conexão em casa?
                     </p>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center gap-3">
                       <button
                         type="button"
                         onClick={() => setPeople((value) => Math.max(1, value - 1))}
@@ -110,8 +110,13 @@ export function Simulator() {
                       >
                         <Minus size={17} aria-hidden="true" />
                       </button>
-                      <output className="min-w-0 flex-1 text-center font-display text-2xl font-extrabold italic leading-none">
-                        {people} <span className="font-sans text-[11px] font-medium not-italic text-white/50">pessoas</span>
+                      <output className="glass-panel inline-flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-full text-center">
+                        <span className="font-display text-2xl font-extrabold italic leading-none">
+                          {people}
+                        </span>
+                        <span className="mt-1 font-sans text-[10px] font-medium not-italic text-white/50">
+                          pessoas
+                        </span>
                       </output>
                       <button
                         type="button"

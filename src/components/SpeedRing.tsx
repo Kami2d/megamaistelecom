@@ -151,6 +151,12 @@ export function SpeedRing() {
               <stop offset="50%" stopColor="#62cbff" stopOpacity="0.18" />
               <stop offset="100%" stopColor="#ffa13d" stopOpacity="0.4" />
             </linearGradient>
+            <radialGradient id="ring-head-neon">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+              <stop offset="30%" stopColor="#62cbff" stopOpacity="0.85" />
+              <stop offset="65%" stopColor="#1e6bff" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#1e6bff" stopOpacity="0" />
+            </radialGradient>
           </defs>
 
           <g className="ring-core-pulse">
@@ -252,9 +258,9 @@ export function SpeedRing() {
           <circle
             cx={gaugeHead.x}
             cy={gaugeHead.y}
-            r="22"
-            fill="#62cbff"
-            opacity="0.28"
+            r="26"
+            fill="url(#ring-head-neon)"
+            opacity="0.85"
             className="ring-head-glow"
           />
           <circle
@@ -277,15 +283,15 @@ export function SpeedRing() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute -left-6 top-[14%] z-20 hidden items-center gap-2 rounded-2xl border border-cyan-signal/20 bg-[#06143a]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip">
+      <div className="glass-frost pointer-events-none absolute -left-6 top-[14%] z-20 hidden items-center gap-2 rounded-2xl px-3 py-2 text-[11px] font-semibold text-white sm:flex float-chip">
         <Activity size={15} className="text-cyan-signal" aria-hidden="true" />
         Sinal estável
       </div>
-      <div className="pointer-events-none absolute -right-8 top-[32%] z-20 hidden items-center gap-2 rounded-2xl border border-coral-accent/25 bg-[#180a08]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip float-chip--warm">
+      <div className="glass-frost pointer-events-none absolute -right-8 top-[32%] z-20 hidden items-center gap-2 rounded-2xl px-3 py-2 text-[11px] font-semibold text-white sm:flex float-chip float-chip--warm">
         <RadioTower size={15} className="text-coral-accent" aria-hidden="true" />
         Fibra de ponta a ponta
       </div>
-      <div className="pointer-events-none absolute bottom-[40%] -left-2 z-20 hidden items-center gap-2 rounded-2xl border border-white/15 bg-[#06143a]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip float-chip--delayed">
+      <div className="glass-frost pointer-events-none absolute bottom-[40%] -left-2 z-20 hidden items-center gap-2 rounded-2xl px-3 py-2 text-[11px] font-semibold text-white sm:flex float-chip float-chip--delayed">
         <MapPin size={15} className="text-cyan-signal" aria-hidden="true" />
         Cobertura local
       </div>

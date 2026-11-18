@@ -1,45 +1,27 @@
 import { siteConfig } from '../data/site'
 
 type BrandLogoProps = {
+  /** Mantido para compatibilidade com os chamadores atuais. */
   tone?: 'light' | 'dark'
+  /** Mantido para compatibilidade com os chamadores atuais. */
   compact?: boolean
   className?: string
 }
 
-export function BrandLogo({
-  tone = 'light',
-  compact = false,
-  className = '',
-}: BrandLogoProps) {
-  const textTone = tone === 'light' ? 'text-white' : 'text-ink-950'
-  const subTone = tone === 'light' ? 'text-white/55' : 'text-ink-500'
-
+/** Letreiro oficial da marca usado no cabeçalho, menu mobile e rodapé. */
+export function BrandLogo({ className = '' }: BrandLogoProps) {
   return (
     <a
       href="#inicio"
       aria-label={`${siteConfig.brand.legalName} — voltar ao início`}
-      className={`group inline-flex items-center gap-2.5 ${className}`}
+      className={`group inline-flex items-center ${className}`}
     >
       <img
-        src="/images/logotipo.png"
+        src="/images/letreiro.png"
         alt=""
         aria-hidden="true"
-        className="h-9 w-9 shrink-0 object-contain transition-transform duration-300 group-hover:-translate-y-0.5"
+        className="h-14 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-16"
       />
-      <span className="leading-none">
-        <span
-          className={`block font-display text-[24px] font-extrabold italic leading-none tracking-[-0.05em] ${textTone}`}
-        >
-          MEGA<span className="text-cyan-signal">+</span>
-        </span>
-        {!compact && (
-          <span
-            className={`mt-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] ${subTone}`}
-          >
-            Telecom
-          </span>
-        )}
-      </span>
     </a>
   )
 }
