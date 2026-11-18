@@ -1,4 +1,5 @@
 import { RadioTower, ServerOff } from 'lucide-react'
+import { NetworkLine } from './NetworkLine'
 
 const networkAreas = [
   'Situação geral da rede',
@@ -24,7 +25,10 @@ export function NetworkStatus() {
             status de plataformas externas nunca é usado para determinar a
             situação da nossa rede.
           </p>
-          <div className="mt-6 flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3.5">
+          <div className="mt-6">
+            <NetworkLine progress={0.776} />
+          </div>
+          <div className="mt-4 flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3.5">
             <ServerOff size={18} className="mt-0.5 shrink-0 text-cyan-signal" aria-hidden="true" />
             <p className="text-sm font-medium text-white/85">
               Informações da rede indisponíveis no momento.

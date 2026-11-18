@@ -27,7 +27,7 @@ export const plans: Plan[] = [
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
-      'Suporte técnico 24h',
+      'Atendimento técnico 24h',
     ],
     uploadMb: null,
     routers: null,
@@ -43,7 +43,7 @@ export const plans: Plan[] = [
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
-      'Suporte técnico 24h',
+      'Atendimento técnico 24h',
     ],
     uploadMb: null,
     routers: null,
@@ -58,7 +58,7 @@ export const plans: Plan[] = [
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
-      'Suporte técnico 24h',
+      'Atendimento técnico 24h',
     ],
     uploadMb: null,
     routers: null,
@@ -73,7 +73,7 @@ export const plans: Plan[] = [
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
-      'Suporte técnico 24h',
+      'Atendimento técnico 24h',
     ],
     uploadMb: null,
     routers: null,

@@ -17,22 +17,33 @@ export function ConversionBanner() {
               aria-hidden="true"
             />
             <div
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-signal/10"
+              className="cta-orbit pointer-events-none absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-cyan-signal/20"
               aria-hidden="true"
             />
+            <div
+              className="cta-orbit cta-orbit--reverse pointer-events-none absolute left-1/2 top-1/2 h-[880px] w-[880px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-coral-accent/10"
+              aria-hidden="true"
+            />
+            <div
+              className="cta-glow pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-signal/10 blur-[90px]"
+              aria-hidden="true"
+            />
+
+            <span className="signal-plus" style={{ fontSize: '14rem', left: '-3rem', top: '8%', transform: 'rotate(-10deg)' }} aria-hidden="true">+</span>
+            <span className="signal-plus" style={{ fontSize: '9rem', right: '4%', bottom: '4%', transform: 'rotate(14deg)' }} aria-hidden="true">+</span>
 
             <div className="relative mx-auto max-w-3xl">
               <span className="eyebrow-pill">Próximo passo</span>
               <h2 className="mt-7 font-display text-[2.5rem] font-extrabold italic leading-[1] tracking-[-0.03em] sm:text-[3.75rem]">
-                Sua próxima conexão pode começar aqui.
+                A sua nova conexão começa com uma conversa.
               </h2>
-              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
-                Encontre o plano que faz sentido para você. Consulte a cobertura,
-                tire suas dúvidas e compare as opções antes de decidir.
+              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
+                Encontre a opção ideal para você. Confira a cobertura, esclareça
+                dúvidas e compare antes de decidir.
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <CtaLink href="#planos" variant="primary">
-                  Quero conhecer os planos
+                  Ver planos disponíveis
                   <ArrowRight size={17} aria-hidden="true" />
                 </CtaLink>
                 <WhatsAppCta
@@ -43,7 +54,7 @@ export function ConversionBanner() {
                   <MessageCircle size={16} aria-hidden="true" />
                 </WhatsAppCta>
               </div>
-              <p className="mt-7 text-[11px] text-white/35">
+              <p className="mt-7 text-[11px] text-white/55">
                 Atendimento comercial · {siteConfig.brand.instagramHandle}
               </p>
             </div>

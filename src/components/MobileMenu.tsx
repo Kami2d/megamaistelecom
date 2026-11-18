@@ -104,7 +104,7 @@ export function MobileMenu({ open, onClose, triggerRef }: MobileMenuProps) {
               data-variant="primary"
               data-size="md"
             >
-              Falar no WhatsApp
+              Enviar mensagem
               <MessageCircle size={16} aria-hidden="true" />
             </a>
           ) : (

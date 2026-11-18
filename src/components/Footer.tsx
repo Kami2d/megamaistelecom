@@ -18,8 +18,8 @@ export function Footer() {
           <div>
             <BrandLogo />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/55">
-              {siteConfig.brand.descriptor}. Internet fibra óptica para casas e
-              empresas em localidades do Maranhão, sujeito à área de cobertura.
+              {siteConfig.brand.descriptor}. Fibra para casas e negócios em
+              localidades do Maranhão, conforme a área de cobertura.
             </p>
             <a
               href={siteConfig.instagramUrl}
@@ -55,7 +55,7 @@ export function Footer() {
             </h2>
             <div className="mt-5 space-y-4 text-sm text-white/60">
               <div>
-                <p className="text-white/40">WhatsApp e telefone</p>
+                <p className="text-white/40">Canais de contato</p>
                 {isWhatsAppConfigured ? (
                   <a
                     href={whatsappUrl()}
@@ -91,7 +91,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {siteConfig.brand.legalName} · CNPJ{' '}
             {siteConfig.cnpj}. Todos os direitos reservados.

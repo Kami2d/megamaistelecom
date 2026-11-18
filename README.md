@@ -7,7 +7,9 @@ O redesenho foi inspirado no MVP de referência que o cliente aprovou
 (https://vitordesigner.com.br/giga/): linguagem visual de azul marinho profundo,
 azul elétrico e ciano como cor de sinal, com acento em laranja. A tipografia
 combina Saira em itálico para os títulos de destaque (display) e Onest para o
-corpo do texto.
+corpo do texto. A identidade foi desenvolvida com um motivo autoral próprio, o
+“signal +” (feixes de fibra, marcas de “+”, fita luminosa e chips de sinal), e
+com textos originais, sem reproduzir o conteúdo do exemplo.
 
 ## Executar
 
@@ -88,6 +90,21 @@ usa Onest, carregados em `index.html`. O logotipo é híbrido: uma imagem local
 `src/components/BrandLogo.tsx`. O layout foi inspirado no
 MVP de referência https://vitordesigner.com.br/giga/; o site atual da empresa
 não foi usado como referência de design.
+
+### Movimento e acessibilidade
+
+As animações são CSS e IntersectionObserver, sem novas dependências:
+
+- `src/hooks/useInView.ts` dispara uma entrada única de animação quando o
+  elemento entra na viewport (disco de 24h, barras de velocidade e timeline).
+- O velocímetro (`src/components/SpeedRing.tsx`) conta de 400 até a velocidade
+  selecionada e anima o arco/ponto de medição na entrada.
+- Feixes de fibra, chips flutuantes, órbitas da CTA final e o wordmark gigante
+  usam `@keyframes` em `src/styles/components.css`.
+- Títulos de seção (`src/components/SectionHeading.tsx`) usam um divisor “+”
+  como assinatura visual.
+- `prefers-reduced-motion: reduce` mantém o conteúdo visível e desliga o
+  movimento, conforme as regras em `src/styles/base.css`.
 
 ## Seções da página
 

@@ -1,6 +1,7 @@
 import { ArrowRight, Headset, MapPin, RadioTower } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { plans } from '../data/plans'
+import { useInView } from '../hooks/useInView'
 import { Container } from '../components/Container'
 import { Reveal } from '../components/Reveal'
 import { SectionHeading } from '../components/SectionHeading'
@@ -9,6 +10,9 @@ import { WhatsAppCta } from '../components/WhatsAppCta'
 const maxSpeed = Math.max(...plans.map((plan) => plan.speedMb))
 
 export function Benefits() {
+  const [dialRef, dialInView] = useInView<HTMLDivElement>()
+  const [barsRef, barsInView] = useInView<HTMLDivElement>()
+
   return (
     <section
       id="diferenciais"
@@ -26,17 +30,17 @@ export function Benefits() {
       <Container className="relative">
         <div className="mb-14 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <SectionHeading
-            eyebrow="Mais do que velocidade"
+            eyebrow="Além da velocidade"
             tone="light"
-            title={<>Internet boa também começa com um bom atendimento.</>}
-            description="Escolher uma provedora vai além dos megas contratados. Veja como funciona a instalação, onde buscar suporte e se existe atendimento na sua região."
+            title={<>Uma boa internet começa com gente que responde.</>}
+            description="Escolher uma provedora envolve mais do que megas: veja como é a instalação, onde pedir ajuda e se atendemos sua região."
           />
           <Reveal delay={100}>
             <WhatsAppCta
-              message="Olá! Quero consultar se a MEGA+ atende a minha região."
+              message="Olá! Quero verificar se a MEGA+ atende a minha região."
               variant="outline-light"
             >
-              Consultar minha região
+              Verificar minha localidade
               <MapPin size={17} aria-hidden="true" />
             </WhatsAppCta>
           </Reveal>
@@ -46,7 +50,7 @@ export function Benefits() {
           <Reveal className="lg:row-span-2">
             <article className="bento-card h-full min-h-[24rem] lg:min-h-full" data-hero="true">
               <div className="flex flex-1 items-center justify-center py-4">
-                <div className="relative aspect-square w-[min(19rem,85%)]">
+                <div ref={dialRef} className="relative aspect-square w-[min(19rem,85%)]">
                   <svg viewBox="0 0 240 240" className="h-full w-full overflow-visible" aria-hidden="true">
                     <defs>
                       <linearGradient id="dial-gradient" x1="0" y1="0" x2="1" y2="1">
@@ -64,7 +68,8 @@ export function Benefits() {
                       strokeWidth="10"
                       strokeLinecap="round"
                       pathLength={100}
-                      strokeDasharray="100 0"
+                      className="dial-progress"
+                      data-visible={dialInView}
                       transform="rotate(-90 120 120)"
                     />
                     {Array.from({ length: 36 }, (_, index) => {
@@ -87,16 +92,16 @@ export function Benefits() {
                       24h
                     </span>
                     <span className="mt-1 max-w-[8rem] text-[11px] font-medium leading-tight text-amber-accent">
-                      prazo informado para instalação
+                      prazo confirmado no atendimento
                     </span>
                   </div>
                 </div>
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold text-white">Instalação em até 24 horas</h3>
+                <h3 className="font-display text-xl font-bold text-white">Instalação ágil, em até 24 horas</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/60">
-                  Comece a usar sua conexão sem esperar mais do que o necessário,
-                  conforme disponibilidade técnica e condições de agendamento.
+                  Quer começar sem demora? Informamos o prazo de até 24 horas,
+                  sujeito à disponibilidade técnica e ao agendamento.
                 </p>
               </div>
             </article>
@@ -111,10 +116,10 @@ export function Benefits() {
                   <Headset size={30} className="text-white" aria-hidden="true" />
                 </div>
               </div>
-              <h3 className="font-display text-xl font-bold text-white">Suporte técnico 24 horas</h3>
+              <h3 className="font-display text-xl font-bold text-white">Suporte técnico disponível 24 horas</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/60">
-                Quando surgir uma dúvida, saber onde buscar ajuda faz diferença.
-                Consulte os canais e as condições de atendimento.
+                Quando aparecer uma questão, saber onde pedir ajuda faz diferença.
+                Veja os canais e condições de atendimento.
               </p>
             </article>
           </Reveal>
@@ -126,7 +131,8 @@ export function Benefits() {
                   {siteConfig.locations.map((location, index) => (
                     <span
                       key={location}
-                      className="inline-flex items-center gap-2 rounded-full bg-white/[0.07] px-3.5 py-2.5 text-xs font-medium text-white/85 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+                      className="location-chip inline-flex items-center gap-2 rounded-full bg-white/[0.07] px-3.5 py-2.5 text-xs font-medium text-white/85 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+                      style={{ animationDelay: `${index * 90}ms` }}
                     >
                       <span
                         className={`h-2 w-2 rounded-full ${index === 0 ? 'bg-coral-accent shadow-[0_0_12px_var(--color-coral-accent)]' : 'bg-cyan-signal shadow-[0_0_12px_var(--color-cyan-signal)]'}`}
@@ -137,16 +143,16 @@ export function Benefits() {
                   ))}
                 </div>
               </div>
-              <h3 className="font-display text-xl font-bold text-white">Atendimento regional</h3>
+              <h3 className="font-display text-xl font-bold text-white">Presença regional</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/60">
-                Atuação em localidades do Maranhão, sujeito à área de cobertura.
+                Atuamos em localidades do Maranhão, conforme nossa área de cobertura.
               </p>
             </article>
           </Reveal>
 
           <Reveal delay={100} className="lg:col-span-2">
             <article className="bento-card h-full min-h-[15rem]">
-              <div className="flex flex-1 items-end gap-3 pt-6">
+              <div ref={barsRef} className="stat-bars flex flex-1 items-end gap-3 pt-6" data-visible={barsInView}>
                 {plans.map((plan) => (
                   <div key={plan.id} className="flex h-full flex-1 flex-col justify-end gap-2">
                     <span className="text-center font-display text-sm font-bold italic text-white">
@@ -155,16 +161,16 @@ export function Benefits() {
                     </span>
                     <i
                       style={{ height: `${(plan.speedMb / maxSpeed) * 100}%` }}
-                      className="block rounded-t-xl bg-[linear-gradient(180deg,#62cbff,#1e6bff)] last:bg-[linear-gradient(180deg,#ffa13d,#ff6a1a)]"
+                      className="block rounded-t-xl"
                     />
                   </div>
                 ))}
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold text-white">Planos para diferentes rotinas</h3>
+                <h3 className="font-display text-xl font-bold text-white">Planos para cada jeito de usar a internet</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/60">
-                  De 400 a 800 Mbps, avalie a opção que combina com a sua casa ou
-                  empresa e a quantidade de dispositivos conectados.
+                  De 400 a 800 Mbps, escolha a opção que combina com sua casa ou
+                  empresa e com o número de dispositivos conectados.
                 </p>
               </div>
             </article>
@@ -176,11 +182,11 @@ export function Benefits() {
             <p className="flex items-center gap-3 text-sm text-white/55">
               <RadioTower size={18} className="text-cyan-signal" aria-hidden="true" />
               <span>
-                Cobertura, instalação e condições confirmadas pela equipe da MEGA+.
+                Cobertura, instalação e condições são validadas pela nossa equipe.
               </span>
             </p>
-            <WhatsAppCta message="Olá! Quero consultar a cobertura da MEGA+ no meu endereço.">
-              Consultar cobertura
+            <WhatsAppCta message="Olá! Quero verificar a cobertura da MEGA+ no meu endereço.">
+              Verificar cobertura
               <ArrowRight size={16} aria-hidden="true" />
             </WhatsAppCta>
           </div>

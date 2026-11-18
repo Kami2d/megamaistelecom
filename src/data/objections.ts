@@ -8,26 +8,26 @@ export type Objection = {
 export const objections: Objection[] = [
   {
     id: 'cobertura',
-    question: 'A MEGA+ atende no meu endereço?',
+    question: 'Vocês atendem o meu endereço?',
     answer:
-      'A disponibilidade pode variar de uma região para outra. Informe seu endereço à equipe para consultar a cobertura antes de escolher o plano.',
+      'A cobertura muda conforme a localidade. Envie seu endereço e confirmamos a disponibilidade antes de qualquer escolha.',
   },
   {
     id: 'velocidade',
-    question: 'Qual velocidade é ideal para mim?',
+    question: 'Qual velocidade combina com minha rotina?',
     answer:
-      'Depende de como você usa a internet, de quantas pessoas se conectam e das atividades realizadas. O simulador ajuda você a comparar as opções de 400 a 800 Mbps.',
+      'Depende do uso, de quantas pessoas se conectam e das atividades. Nosso simulador compara as opções de 400 a 800 Mbps.',
   },
   {
     id: 'instalacao',
-    question: 'Quanto tempo leva para instalar?',
+    question: 'Qual é o prazo de instalação?',
     answer:
-      'A equipe informa o prazo conforme a cobertura, a disponibilidade técnica e as condições de agendamento para o seu endereço.',
+      'O prazo é informado conforme cobertura, disponibilidade técnica e agendamento do seu endereço.',
   },
   {
     id: 'wifi',
-    question: 'E se o sinal não chegar bem a todos os cômodos?',
+    question: 'E se o Wi-Fi não alcançar todos os ambientes?',
     answer:
-      'A distribuição do Wi-Fi depende do tamanho do imóvel, das paredes e da posição do roteador. Consulte as opções com repetidor e veja qual solução faz sentido para o seu ambiente.',
+      'O alcance varia conforme o tamanho do imóvel, as paredes e a posição do roteador. Conheça as opções com repetidor e escolha a melhor para o seu espaço.',
   },
 ]

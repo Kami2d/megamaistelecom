@@ -23,9 +23,9 @@ export const faqItems: FaqItem[] = [
   },
   {
     id: 'contratacao',
-    question: 'Como faço para contratar?',
+    question: 'Como contrato a internet?',
     answer:
-      'Escolha um plano, consulte a disponibilidade da sua região e fale com a nossa equipe pelo WhatsApp. O atendimento comercial confirma os próximos passos.',
+      'Escolha uma opção, confirme a disponibilidade na sua região e fale com o nosso time. O comercial cuida das próximas etapas.',
   },
   {
     id: 'instalacao',

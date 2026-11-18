@@ -1,10 +1,10 @@
 /**
- * Demonstrative data for the Central de Status.
+ * Catálogo de serviços monitorados pela Central de Status.
  *
- * Nothing here is a live verification. Every state is fictional and is shown
- * to the visitor under an explicit "modo demonstração" notice. A future
- * backend adapter must replace `demoStatusProvider` (see src/services/status.ts)
- * with normalized results from official status pages/APIs.
+ * Os status exibidos são preenchidos em tempo de execução pelo provider
+ * (`src/services/status.ts`) a partir das páginas/APIs oficiais de cada
+ * plataforma. Quando não há uma fonte consultável pelo navegador, o serviço
+ * aparece como "Informação indisponível" com link para a fonte oficial.
  */
 
 export type ServiceStatus =
@@ -24,7 +24,10 @@ export type MonitoredService = {
   lastUpdated: string
   sourceName: string
   sourceUrl: string | null
+  /** Detalhe do incidente ativo divulgado pela fonte oficial. */
   incidentDescription?: string
+  /** Explicação quando não há API pública ou quando a consulta falhou. */
+  note?: string
 }
 
 export type StatusIncident = {
@@ -34,6 +37,8 @@ export type StatusIncident = {
   startedAt: string
   currentStatus: ServiceStatus
   resolvedAt?: string
+  sourceName: string
+  sourceUrl: string | null
 }
 
 export const statusLabels: Record<ServiceStatus, string> = {
@@ -45,7 +50,7 @@ export const statusLabels: Record<ServiceStatus, string> = {
 }
 
 export const statusUnknownMessage =
-  'Não foi possível verificar o status deste serviço.'
+  'Não foi possível verificar o status deste serviço pela fonte oficial.'
 
 export const categories: { id: ServiceCategory; label: string }[] = [
   { id: 'streaming', label: 'Streaming' },
@@ -54,162 +59,164 @@ export const categories: { id: ServiceCategory; label: string }[] = [
   { id: 'communication', label: 'Comunicação' },
 ]
 
-const time = (minutesAgo: number) =>
-  new Date(Date.now() - minutesAgo * 60_000).toLocaleTimeString('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-
+/**
+ * Estado neutro usado antes da consulta e como fallback. Nenhum status é
+ * inventado: `unknown` significa que a fonte oficial não pôde ser consultada.
+ */
 export const monitoredServices: MonitoredService[] = [
   {
     id: 'youtube',
     name: 'YouTube',
     category: 'streaming',
-    status: 'operational',
-    lastUpdated: time(3),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'YouTube (site oficial)',
+    sourceUrl: 'https://www.youtube.com/',
+    note: 'O YouTube não disponibiliza uma API pública de status para consulta direta pelo navegador.',
   },
   {
     id: 'netflix',
     name: 'Netflix',
     category: 'streaming',
-    status: 'degraded',
-    lastUpdated: time(7),
-    sourceName: 'Netflix Status',
-    sourceUrl: 'https://status.netflix.com/',
-    incidentDescription:
-      'Demonstração: lentidão no carregamento de alguns títulos.',
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Central de ajuda da Netflix',
+    sourceUrl: 'https://help.netflix.com/',
+    note: 'A Netflix não mantém uma página de status com API pública confirmada.',
   },
   {
     id: 'disney',
     name: 'Disney+',
     category: 'streaming',
-    status: 'operational',
-    lastUpdated: time(5),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Central de ajuda do Disney+',
+    sourceUrl: 'https://help.disneyplus.com/',
+    note: 'O Disney+ não disponibiliza uma API pública de status.',
   },
   {
     id: 'prime-video',
     name: 'Amazon Prime Video',
     category: 'streaming',
-    status: 'operational',
-    lastUpdated: time(4),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Ajuda do Prime Video',
+    sourceUrl: 'https://www.primevideo.com/help',
+    note: 'O Prime Video não disponibiliza uma API pública de status.',
   },
   {
     id: 'twitch',
     name: 'Twitch',
     category: 'streaming',
-    status: 'maintenance',
-    lastUpdated: time(12),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Twitch Status',
     sourceUrl: 'https://status.twitch.com/',
-    incidentDescription:
-      'Demonstração: manutenção programada em parte da plataforma.',
   },
   {
     id: 'instagram',
     name: 'Instagram',
     category: 'social',
-    status: 'operational',
-    lastUpdated: time(2),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Meta Status',
     sourceUrl: 'https://www.facebook.com/supportstatus/',
+    note: 'A Meta não oferece uma API pública de status para estas plataformas.',
   },
   {
     id: 'facebook',
     name: 'Facebook',
     category: 'social',
-    status: 'operational',
-    lastUpdated: time(2),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Meta Status',
     sourceUrl: 'https://www.facebook.com/supportstatus/',
+    note: 'A Meta não oferece uma API pública de status para estas plataformas.',
   },
   {
     id: 'whatsapp',
     name: 'WhatsApp',
     category: 'social',
-    status: 'degraded',
-    lastUpdated: time(9),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Meta Status',
     sourceUrl: 'https://www.facebook.com/supportstatus/',
-    incidentDescription:
-      'Demonstração: atraso no envio de mensagens em algumas regiões.',
+    note: 'A Meta não oferece uma API pública de status para estas plataformas.',
   },
   {
     id: 'tiktok',
     name: 'TikTok',
     category: 'social',
-    status: 'operational',
-    lastUpdated: time(6),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Central de ajuda do TikTok',
+    sourceUrl: 'https://support.tiktok.com/',
+    note: 'O TikTok não disponibiliza uma API pública de status.',
   },
   {
     id: 'x',
     name: 'X',
     category: 'social',
     status: 'unknown',
-    lastUpdated: time(15),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    lastUpdated: '—',
+    sourceName: 'Central de ajuda do X',
+    sourceUrl: 'https://help.x.com/',
+    note: 'O X não disponibiliza uma API pública de status.',
   },
   {
     id: 'steam',
     name: 'Steam',
     category: 'games',
-    status: 'operational',
-    lastUpdated: time(3),
-    sourceName: 'Steam Stats',
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Estatísticas de servidores Steam',
     sourceUrl: 'https://store.steampowered.com/stats/',
+    note: 'As estatísticas da Steam não permitem consulta via navegador por restrição de CORS.',
   },
   {
     id: 'psn',
     name: 'PlayStation Network',
     category: 'games',
-    status: 'outage',
-    lastUpdated: time(11),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'PlayStation Status',
     sourceUrl: 'https://status.playstation.com/',
-    incidentDescription:
-      'Demonstração: falha de conexão em serviços online selecionados.',
   },
   {
     id: 'xbox',
     name: 'Xbox Network',
     category: 'games',
-    status: 'operational',
-    lastUpdated: time(5),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Xbox Live Status',
     sourceUrl: 'https://support.xbox.com/help/errors/xbox-live-status',
+    note: 'A Xbox não disponibiliza uma API pública de status.',
   },
   {
     id: 'riot',
     name: 'Riot Games',
     category: 'games',
     status: 'unknown',
-    lastUpdated: time(18),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    lastUpdated: '—',
+    sourceName: 'Riot Games Status',
+    sourceUrl: 'https://status.riotgames.com/',
+    note: 'A página da Riot não expõe um endpoint público de status compatível.',
   },
   {
     id: 'epic',
     name: 'Epic Games',
     category: 'games',
-    status: 'operational',
-    lastUpdated: time(8),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    status: 'unknown',
+    lastUpdated: '—',
+    sourceName: 'Epic Games Status',
+    sourceUrl: 'https://status.epicgames.com/',
   },
   {
     id: 'discord',
     name: 'Discord',
     category: 'communication',
-    status: 'operational',
-    lastUpdated: time(1),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Discord Status',
     sourceUrl: 'https://discordstatus.com/',
   },
@@ -218,42 +225,19 @@ export const monitoredServices: MonitoredService[] = [
     name: 'Telegram',
     category: 'communication',
     status: 'unknown',
-    lastUpdated: time(21),
-    sourceName: 'Sem fonte pública confirmada',
-    sourceUrl: null,
+    lastUpdated: '—',
+    sourceName: 'Telegram (site oficial)',
+    sourceUrl: 'https://telegram.org/',
+    note: 'O Telegram não disponibiliza uma API pública de status.',
   },
   {
     id: 'google-meet',
     name: 'Google Meet',
     category: 'communication',
-    status: 'operational',
-    lastUpdated: time(4),
+    status: 'unknown',
+    lastUpdated: '—',
     sourceName: 'Google Workspace Status',
     sourceUrl: 'https://status.cloud.google.com/',
-  },
-]
-
-export const demoIncidents: StatusIncident[] = [
-  {
-    id: 'incident-psn',
-    serviceName: 'PlayStation Network',
-    description: 'Demonstração: indisponibilidade de serviços online.',
-    startedAt: `Hoje, ${time(52)}`,
-    currentStatus: 'outage',
-  },
-  {
-    id: 'incident-netflix',
-    serviceName: 'Netflix',
-    description: 'Demonstração: lentidão intermitente na reprodução.',
-    startedAt: `Hoje, ${time(38)}`,
-    currentStatus: 'degraded',
-  },
-  {
-    id: 'incident-whatsapp',
-    serviceName: 'WhatsApp',
-    description: 'Demonstração: atraso no envio de mensagens.',
-    startedAt: `Ontem, ${time(180)}`,
-    currentStatus: 'operational',
-    resolvedAt: `Ontem, ${time(140)}`,
+    note: 'O feed público do Google cobre incidentes de infraestrutura, não o status individual do Meet.',
   },
 ]

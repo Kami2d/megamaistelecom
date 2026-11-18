@@ -31,10 +31,17 @@ export function SectionHeading({
       >
         {title}
       </h2>
+
+      <div className={`mt-6 flex items-center gap-2 ${alignment.includes('mx-auto') ? 'justify-center' : ''}`} aria-hidden="true">
+        <span className="h-[2px] w-12 rounded-full bg-[linear-gradient(90deg,#1e6bff,#62cbff)]" />
+        <span className="font-display text-sm font-extrabold italic text-coral-accent">+</span>
+        <span className={`h-[2px] w-6 rounded-full ${isLight ? 'bg-white/20' : 'bg-ink-900/15'}`} />
+      </div>
+
       {description && (
         <p
           className={`mt-5 text-[15px] leading-relaxed sm:text-base ${
-            isLight ? 'text-white/60' : 'text-ink-500'
+            isLight ? 'text-white/70' : 'text-ink-500'
           }`}
         >
           {description}

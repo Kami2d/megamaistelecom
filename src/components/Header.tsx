@@ -51,11 +51,11 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <WhatsAppCta
-              message="Olá! Quero consultar a cobertura da MEGA+ no meu endereço."
+              message="Olá! Quero verificar a cobertura da MEGA+ no meu endereço."
               size="sm"
               className="hidden sm:inline-flex"
             >
-              Consultar cobertura
+              Verificar cobertura
               <MessageCircle size={16} aria-hidden="true" />
             </WhatsAppCta>
             <button

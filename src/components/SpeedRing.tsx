@@ -1,5 +1,5 @@
-import { useMemo, type KeyboardEvent } from 'react'
-import { Clock3, Headset, MapPin } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { Activity, Clock3, Headset, MapPin, RadioTower } from 'lucide-react'
 import { usePlanSelection } from '../context/PlanSelectionContext'
 import { plans } from '../data/plans'
 
@@ -9,7 +9,27 @@ const circumference = 2 * Math.PI * radius
 const startAngle = 135
 const sweepDegrees = 270
 const arcLength = circumference * (sweepDegrees / 360)
+// O gradiente é aplicado dentro do <g> rotacionado, então as coordenadas
+// precisam estar no espaço local (antes da rotação de `startAngle`).
+const gradientStart = { x: center + radius, y: center }
+const gradientEnd = {
+  x: center + radius * Math.cos((sweepDegrees * Math.PI) / 180),
+  y: center + radius * Math.sin((sweepDegrees * Math.PI) / 180),
+}
 const speeds = plans.map((plan) => plan.speedMb)
+
+type Rgb = { r: number; g: number; b: number }
+const blue: Rgb = { r: 30, g: 107, b: 255 }
+const orange: Rgb = { r: 255, g: 106, b: 26 }
+const amber: Rgb = { r: 255, g: 161, b: 61 }
+
+function mixColor(from: Rgb, to: Rgb, amount: number) {
+  const t = Math.min(1, Math.max(0, amount))
+  const r = Math.round(from.r + (to.r - from.r) * t)
+  const g = Math.round(from.g + (to.g - from.g) * t)
+  const b = Math.round(from.b + (to.b - from.b) * t)
+  return `rgb(${r} ${g} ${b})`
+}
 
 const ticks = Array.from({ length: 55 }, (_, index) => {
   const angle = ((135 + index * 5) * Math.PI) / 180
@@ -35,12 +55,54 @@ function downloadEstimate(speedMb: number) {
 export function SpeedRing() {
   const { selectedSpeed: speed, setSelectedSpeed: setSpeed } = usePlanSelection()
   const ratio = speed / speeds[speeds.length - 1]
-  const headAngle = ((startAngle + ratio * sweepDegrees) * Math.PI) / 180
-  const head = {
-    x: center + radius * Math.cos(headAngle),
-    y: center + radius * Math.sin(headAngle),
-  }
+  const speedProgress =
+    speeds.length > 1
+      ? (speed - speeds[0]) / (speeds[speeds.length - 1] - speeds[0])
+      : 0
+  const barColor = mixColor(blue, orange, speedProgress)
+  const barColorLight = mixColor(orange, amber, speedProgress)
   const estimate = useMemo(() => downloadEstimate(speed), [speed])
+  const [displaySpeed, setDisplaySpeed] = useState(speeds[0])
+  const [ready, setReady] = useState(false)
+  const displayRef = useRef(speeds[0])
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setReady(true))
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      displayRef.current = speed
+      setDisplaySpeed(speed)
+      return
+    }
+
+    const start = performance.now()
+    const from = displayRef.current
+    const duration = 450
+    let frame = 0
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      const value = Math.round(from + (speed - from) * eased)
+      displayRef.current = value
+      setDisplaySpeed(value)
+      if (progress < 1) frame = window.requestAnimationFrame(tick)
+    }
+
+    frame = window.requestAnimationFrame(tick)
+    return () => window.cancelAnimationFrame(frame)
+  }, [speed])
+
+  const gaugeRatio = ready ? ratio : 0
+  const gaugeHeadAngle = ((startAngle + gaugeRatio * sweepDegrees) * Math.PI) / 180
+  const gaugeHead = {
+    x: center + radius * Math.cos(gaugeHeadAngle),
+    y: center + radius * Math.sin(gaugeHeadAngle),
+  }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let next = index
@@ -63,22 +125,56 @@ export function SpeedRing() {
       <div className="relative mx-auto aspect-square w-full max-w-[500px]">
         <svg viewBox="0 0 600 600" className="h-full w-full overflow-visible" aria-hidden="true">
           <defs>
-            <linearGradient id="ring-gradient" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient
+              id="ring-gradient"
+              gradientUnits="userSpaceOnUse"
+              x1={gradientStart.x}
+              y1={gradientStart.y}
+              x2={gradientEnd.x}
+              y2={gradientEnd.y}
+            >
               <stop offset="0%" stopColor="#1e6bff" />
-              <stop offset="55%" stopColor="#3d8bff" />
-              <stop offset="100%" stopColor="#62cbff" />
-            </linearGradient>
-            <linearGradient id="ring-gradient-warm" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#ff5a10" />
-              <stop offset="100%" stopColor="#ffa13d" />
+              <stop offset="55%" stopColor={barColor} />
+              <stop offset="100%" stopColor={barColorLight} />
             </linearGradient>
             <radialGradient id="ring-core">
-              <stop offset="0%" stopColor="#123a78" stopOpacity="0.85" />
+              <stop offset="0%" stopColor={barColor} stopOpacity="0.55" />
               <stop offset="100%" stopColor="#05102c" stopOpacity="0" />
             </radialGradient>
+            <linearGradient id="ring-glass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.24" />
+              <stop offset="45%" stopColor="#8fc6ff" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.12" />
+            </linearGradient>
+            <linearGradient id="ring-glass-edge" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.65" />
+              <stop offset="50%" stopColor="#62cbff" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#ffa13d" stopOpacity="0.4" />
+            </linearGradient>
           </defs>
 
-          <circle cx={center} cy={center} r="262" fill="url(#ring-core)" />
+          <g className="ring-core-pulse">
+            <circle cx={center} cy={center} r="280" fill="url(#ring-core)" />
+            <circle
+              cx={center}
+              cy={center}
+              r="280"
+              fill="url(#ring-glass)"
+              stroke="url(#ring-glass-edge)"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx={center}
+              cy={center}
+              r="272"
+              fill="none"
+              stroke="rgba(255,255,255,0.32)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray="150 1600"
+              transform={`rotate(200 ${center} ${center})`}
+            />
+          </g>
 
           <g className="orbit-slow">
             <circle
@@ -132,41 +228,66 @@ export function SpeedRing() {
               cy={center}
               r={radius}
               fill="none"
-              stroke={speed === speeds[speeds.length - 1] ? 'url(#ring-gradient-warm)' : 'url(#ring-gradient)'}
+              stroke="url(#ring-gradient)"
               strokeWidth="40"
               strokeLinecap="round"
-              opacity="0.16"
               strokeDasharray={`${arcLength} ${circumference}`}
-              strokeDashoffset={arcLength * (1 - ratio)}
-              className="transition-all duration-700 ease-out"
+              strokeDashoffset={arcLength * (1 - gaugeRatio)}
+              className="ring-bar-glow transition-[stroke-dashoffset] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
             />
             <circle
               cx={center}
               cy={center}
               r={radius}
               fill="none"
-              stroke={speed === speeds[speeds.length - 1] ? 'url(#ring-gradient-warm)' : 'url(#ring-gradient)'}
+              stroke="url(#ring-gradient)"
               strokeWidth="16"
               strokeLinecap="round"
               strokeDasharray={`${arcLength} ${circumference}`}
-              strokeDashoffset={arcLength * (1 - ratio)}
-              className="transition-all duration-700 ease-out"
+              strokeDashoffset={arcLength * (1 - gaugeRatio)}
+              className="ring-bar transition-[stroke-dashoffset] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
             />
           </g>
 
-          <circle cx={head.x} cy={head.y} r="22" fill="#fff" opacity="0.16" />
-          <circle cx={head.x} cy={head.y} r="9" fill="#fff" className="transition-all duration-700 ease-out" />
+          <circle
+            cx={gaugeHead.x}
+            cy={gaugeHead.y}
+            r="22"
+            fill="#62cbff"
+            opacity="0.28"
+            className="ring-head-glow"
+          />
+          <circle
+            cx={gaugeHead.x}
+            cy={gaugeHead.y}
+            r="9"
+            fill="#fff"
+            className="ring-head-core"
+          />
         </svg>
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">
-            Fibra óptica de até
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">
+            Velocidade de até
           </p>
           <p className="mt-2 font-display text-[clamp(4.5rem,11vw,8rem)] font-extrabold italic leading-[0.85] tracking-[-0.05em] text-white [text-shadow:0_0_45px_rgba(98,203,255,0.45)]">
-            {speed}
+            {displaySpeed}
           </p>
           <p className="mt-2 font-display text-lg font-bold italic text-cyan-signal">Mbps</p>
         </div>
+      </div>
+
+      <div className="pointer-events-none absolute -left-6 top-[14%] z-20 hidden items-center gap-2 rounded-2xl border border-cyan-signal/20 bg-[#06143a]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip">
+        <Activity size={15} className="text-cyan-signal" aria-hidden="true" />
+        Sinal estável
+      </div>
+      <div className="pointer-events-none absolute -right-8 top-[32%] z-20 hidden items-center gap-2 rounded-2xl border border-coral-accent/25 bg-[#180a08]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip float-chip--warm">
+        <RadioTower size={15} className="text-coral-accent" aria-hidden="true" />
+        Fibra de ponta a ponta
+      </div>
+      <div className="pointer-events-none absolute bottom-[40%] -left-2 z-20 hidden items-center gap-2 rounded-2xl border border-white/15 bg-[#06143a]/85 px-3 py-2 text-[11px] font-semibold text-white shadow-[0_18px_35px_-18px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex float-chip float-chip--delayed">
+        <MapPin size={15} className="text-cyan-signal" aria-hidden="true" />
+        Cobertura local
       </div>
 
       <div
@@ -192,15 +313,15 @@ export function SpeedRing() {
         ))}
       </div>
 
-      <p className="mx-auto mt-5 max-w-sm text-center text-[13px] leading-relaxed text-white/50">
-        Um filme em 4K de 20 GB baixa em cerca de <strong className="font-semibold text-white">{estimate}</strong> na velocidade máxima do plano.
+      <p className="mx-auto mt-5 max-w-sm text-center text-[13px] leading-relaxed text-white/65">
+        Um filme em 4K de 20 GB é baixado em cerca de <strong className="font-semibold text-white">{estimate}</strong> no pico do plano.
       </p>
 
       <div className="mt-7 grid gap-2.5 sm:grid-cols-3">
         {[
           { icon: Clock3, title: 'Instalação ágil', tone: 'warm' },
-          { icon: Headset, title: 'Suporte técnico 24h', tone: 'blue' },
-          { icon: MapPin, title: 'Atendimento regional', tone: 'blue' },
+          { icon: Headset, title: 'Atendimento técnico 24h', tone: 'blue' },
+          { icon: MapPin, title: 'Presença regional', tone: 'blue' },
         ].map(({ icon: Icon, title, tone }) => (
           <div
             key={title}

@@ -1,33 +1,38 @@
-import { ArrowRight, Check } from 'lucide-react'
+import { useRef } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { Container } from '../components/Container'
 import { Reveal } from '../components/Reveal'
 import { SectionHeading } from '../components/SectionHeading'
+import { StepsTimeline } from '../components/StepsTimeline'
 import { WhatsAppCta } from '../components/WhatsAppCta'
 
 const steps = [
   {
     number: '01',
-    title: 'Converse com a MEGA+',
+    title: 'Fale com a nossa equipe',
     description:
-      'Chame a equipe pelo WhatsApp e conte se procura internet para sua casa ou para sua empresa.',
+      'Chame a gente pelo WhatsApp e diga se a conexão é para casa ou para o negócio.',
   },
   {
     number: '02',
-    title: 'Consulte cobertura e planos',
+    title: 'Confira cobertura e opções',
     description:
-      'Informe seu endereço, verifique a disponibilidade e conheça velocidades, valores e condições.',
+      'Informe seu endereço, confirme a disponibilidade e conheça velocidades, valores e regras de contratação.',
   },
   {
     number: '03',
-    title: 'Escolha e combine a instalação',
+    title: 'Defina o plano e agende a instalação',
     description:
-      'Se o plano atender às suas necessidades, confirme as condições e veja as possibilidades de agendamento.',
+      'Se o plano atender ao que você precisa, confirme as condições e escolha a melhor data.',
   },
 ]
 
 export function Steps() {
+  const sectionRef = useRef<HTMLElement>(null)
+
   return (
     <section
+      ref={sectionRef}
       id="como-contratar"
       className="relative overflow-hidden bg-[radial-gradient(60%_50%_at_50%_100%,rgba(30,107,255,0.35),transparent_70%),linear-gradient(180deg,#050f2c,#020716)] py-24 text-white sm:py-32"
     >
@@ -36,32 +41,32 @@ export function Steps() {
           eyebrow="Como contratar"
           tone="light"
           align="center"
-          title="Da escolha do plano à instalação, um passo de cada vez."
-          description="Você não precisa descobrir tudo sozinho. Comece com uma conversa e conheça as opções disponíveis para sua casa ou empresa."
+          title="Três passos para colocar a fibra para trabalhar por você."
+          description="Comece pela conversa, veja o que está disponível no seu endereço e siga até a instalação no prazo combinado."
         />
 
-        <div className="relative mt-16 grid gap-6 pl-10 lg:grid-cols-3 lg:gap-6 lg:pl-0">
-          <span className="steps-track lg:left-0 lg:right-0 lg:top-[1.1rem] lg:bottom-auto lg:h-[2px] lg:w-auto" aria-hidden="true">
-            <i className="lg:w-full lg:h-full" />
-          </span>
+        <div className="relative mt-14 grid gap-6 pl-14 lg:grid-cols-3 lg:gap-6 lg:pl-0 lg:pt-16">
+          <StepsTimeline sectionRef={sectionRef} />
 
           {steps.map((step, index) => (
             <Reveal key={step.number} delay={index * 100}>
-              <article className="glass-panel relative flex h-full flex-col gap-4 rounded-[1.65rem] p-7">
+              <article
+                data-step-card
+                className="glass-panel group relative flex h-full flex-col gap-4 rounded-[1.75rem] p-7 transition duration-500 hover:-translate-y-1 hover:bg-white/[0.07] hover:shadow-[0_30px_70px_-40px_rgba(30,107,255,0.9)]"
+              >
                 <span
-                  className={`absolute -left-[3.1rem] top-2 grid h-9 w-9 place-items-center rounded-full bg-ink-900 text-white shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)] lg:static lg:h-auto lg:w-auto lg:bg-transparent lg:p-0 lg:text-left lg:shadow-none ${
-                    index === steps.length - 1 ? '!bg-coral-accent' : ''
-                  }`}
+                  className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-signal/60 to-transparent opacity-60"
                   aria-hidden="true"
-                >
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 lg:hidden">
-                    <Check size={13} />
-                  </span>
-                  <span className="font-display text-[3.5rem] font-extrabold italic leading-[0.9] tracking-[-0.04em] text-transparent [-webkit-text-stroke:1.4px_rgba(140,190,255,0.55)] lg:block">
+                />
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-display text-[3.5rem] font-extrabold italic leading-[0.9] tracking-[-0.04em] text-transparent [-webkit-text-stroke:1.4px_rgba(140,190,255,0.55)]">
                     {step.number}
                   </span>
-                </span>
-                <h3 className="pt-2 font-display text-xl font-bold text-white lg:pt-0">
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/45">
+                    Passo {step.number}
+                  </span>
+                </div>
+                <h3 className="mt-1 font-display text-xl font-bold text-white">
                   {step.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-white/60">{step.description}</p>
@@ -73,12 +78,12 @@ export function Steps() {
         <Reveal delay={180}>
           <div className="mt-12 flex flex-col items-center gap-5 text-center">
             <WhatsAppCta message="Olá! Quero contratar a internet fibra óptica da MEGA+." variant="primary">
-              Falar com a MEGA+ agora
+              Falar com a equipe agora
               <ArrowRight size={17} aria-hidden="true" />
             </WhatsAppCta>
-            <p className="max-w-lg text-xs leading-relaxed text-white/40">
-              A contratação depende da cobertura, da disponibilidade técnica e da
-              confirmação das condições comerciais.
+            <p className="max-w-lg text-xs leading-relaxed text-white/60">
+              A contratação está sujeita à cobertura, à disponibilidade técnica e
+              à confirmação das condições comerciais.
             </p>
           </div>
         </Reveal>

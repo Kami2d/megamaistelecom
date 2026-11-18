@@ -62,16 +62,16 @@ export function StatusPage() {
               Central de Status
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65">
-              Veja como a Central de Status apresenta a disponibilidade dos
-              principais serviços e plataformas da internet.
+              Acompanhe a disponibilidade dos principais serviços e plataformas
+              da internet consultando diretamente as fontes oficiais.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-cyan-signal/35 bg-cyan-signal/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-signal">
-                Modo demonstração
+                {snapshot?.mode === 'live' ? 'Dados oficiais' : 'Carregando fontes'}
               </span>
               <span className="text-xs text-white/60">
-                Última consulta local: {checkedAt}
+                Última consulta: {checkedAt}
               </span>
               <button
                 type="button"
@@ -83,8 +83,9 @@ export function StatusPage() {
               </button>
             </div>
             <p className="mt-4 max-w-2xl text-[11px] leading-relaxed text-white/40">
-              Os estados exibidos são fictícios, usados apenas para demonstrar a
-              interface. Nenhuma verificação externa foi realizada.
+              Serviços sem API pública consultável aparecem como “Informação
+              indisponível”, com link para a fonte oficial. Nenhum status é
+              inventado quando a consulta falha.
             </p>
           </Reveal>
         </Container>
@@ -197,7 +198,7 @@ export function StatusPage() {
           <SectionHeading
             eyebrow="Histórico"
             title="Incidentes recentes"
-            description="Registros demonstrativos para mostrar como o histórico será apresentado quando houver dados oficiais."
+            description="Incidentes ativos e manutenções divulgados pelas fontes oficiais consultadas."
           />
           <Reveal delay={80}>
             <div className="mt-9">

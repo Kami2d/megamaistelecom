@@ -7,31 +7,31 @@ import { Reveal } from '../components/Reveal'
 import { WhatsAppCta } from '../components/WhatsAppCta'
 
 const uses = [
-  { label: 'Redes sociais', weight: 1 },
-  { label: 'Vídeos e streaming', weight: 2 },
-  { label: 'Home office ou aulas', weight: 3 },
-  { label: 'Filmes em 4K', weight: 4 },
+  { label: 'Navegação e redes', weight: 1 },
+  { label: 'Streaming no dia a dia', weight: 2 },
+  { label: 'Trabalho ou aulas online', weight: 3 },
+  { label: 'Conteúdo em 4K', weight: 4 },
   { label: 'Jogos online', weight: 4 },
-  { label: 'Muitos aparelhos', weight: 4 },
+  { label: 'Muitos dispositivos', weight: 4 },
 ]
 
 const homes = [
-  { id: 'compact', label: 'Compacto, poucos cômodos', weight: 0 },
-  { id: 'large', label: 'Vários cômodos ou andares', weight: 3 },
+  { id: 'compact', label: 'Compacto / poucos ambientes', weight: 0 },
+  { id: 'large', label: 'Amplo / vários ambientes', weight: 3 },
 ]
 
 const reasons: Record<number, string> = {
-  400: 'Uma opção enxuta para navegar, acessar redes sociais e resolver as tarefas do dia a dia.',
-  500: 'Mais folga para dividir a conexão entre videochamadas, streaming, estudos e trabalho.',
+  400: 'Uma opção enxuta para navegar, usar redes e resolver as tarefas do dia a dia.',
+  500: 'Mais folga para dividir a conexão entre chamadas de vídeo, streaming, estudos e trabalho.',
   600: 'Espaço para vários dispositivos conectados sem disputar velocidade.',
-  800: 'Máxima capacidade para uma rotina digital intensa, com muitos aparelhos e downloads.',
+  800: 'Máxima capacidade para uma rotina digital intensa, com muitos dispositivos e downloads.',
 }
 
 export function Simulator() {
   const [people, setPeople] = useState(3)
   const [selectedUses, setSelectedUses] = useState<string[]>([
-    'Vídeos e streaming',
-    'Home office ou aulas',
+    'Streaming no dia a dia',
+    'Trabalho ou aulas online',
   ])
   const [home, setHome] = useState('compact')
 
@@ -60,7 +60,7 @@ export function Simulator() {
     `${people} ${people === 1 ? 'pessoa' : 'pessoas'} na internet`,
     selectedUses.length ? selectedUses.join(', ') : 'Uso não informado',
     homes.find((item) => item.id === home)?.label ?? '',
-    `Sugestão: ${suggestion.name} (${suggestion.speedMb} Mbps)`,
+    `Indicação: ${suggestion.name} (${suggestion.speedMb} Mbps)`,
   ].join(' | ')
 
   return (
@@ -80,17 +80,17 @@ export function Simulator() {
 
             <div className="relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
               <div className="flex flex-col justify-center">
-                <span className="eyebrow-pill w-max">Simulador de plano</span>
+                <span className="eyebrow-pill w-max">Monte seu plano</span>
                 <h2 className="mt-6 font-display text-[2rem] font-extrabold italic leading-[1.02] tracking-[-0.025em] sm:text-[2.75rem] lg:text-[3.25rem]">
-                  Ainda não sabe qual escolher?
+                  Monte a sugestão que combina com a sua rotina.
                 </h2>
-                <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/60">
-                  Conte como você usa a internet e receba uma orientação inicial.
-                  A simulação vai junto na mensagem para a nossa equipe analisar.
+                <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/70">
+                  Conte sua rotina online e receba uma indicação inicial. Seus
+                  dados seguem na mensagem para a nossa equipe avaliar.
                 </p>
-                <p className="mt-8 flex items-start gap-2 text-xs leading-relaxed text-white/40">
+                <p className="mt-8 flex items-start gap-2 text-xs leading-relaxed text-white/60">
                   <Sparkles size={15} className="mt-0.5 shrink-0 text-cyan-signal" aria-hidden="true" />
-                  O resultado é uma sugestão inicial. A indicação final depende da
+                  O resultado é uma indicação inicial. A escolha final depende da
                   cobertura e das condições confirmadas no atendimento.
                 </p>
               </div>
@@ -99,7 +99,7 @@ export function Simulator() {
                 <div className="grid gap-6">
                   <div className="grid gap-3">
                     <p className="text-sm font-medium text-white/80">
-                      Quantas pessoas usam a internet no imóvel?
+                      Quantas pessoas dividem a conexão em casa?
                     </p>
                     <div className="flex items-center gap-3">
                       <button
@@ -110,8 +110,8 @@ export function Simulator() {
                       >
                         <Minus size={17} aria-hidden="true" />
                       </button>
-                      <output className="min-w-0 flex-1 text-center font-display text-3xl font-extrabold italic">
-                        {people} <span className="font-sans text-xs font-medium not-italic text-white/50">pessoas</span>
+                      <output className="min-w-0 flex-1 text-center font-display text-2xl font-extrabold italic leading-none">
+                        {people} <span className="font-sans text-[11px] font-medium not-italic text-white/50">pessoas</span>
                       </output>
                       <button
                         type="button"
@@ -126,7 +126,7 @@ export function Simulator() {
 
                   <div className="grid gap-3">
                     <p className="text-sm font-medium text-white/80">
-                      O que vocês mais fazem online?
+                      Quais atividades consomem mais internet por aí?
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {uses.map((use) => (
@@ -144,7 +144,7 @@ export function Simulator() {
                   </div>
 
                   <div className="grid gap-3">
-                    <p className="text-sm font-medium text-white/80">Como é o imóvel?</p>
+                    <p className="text-sm font-medium text-white/80">Como é o espaço que será conectado?</p>
                     <div className="flex flex-wrap gap-2" role="group" aria-label="Tamanho do imóvel">
                       {homes.map((item) => (
                         <button
@@ -167,7 +167,7 @@ export function Simulator() {
                   >
                     <div>
                       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink-500">
-                        Sugestão inicial
+                        Indicação inicial
                       </p>
                       <p className="mt-1 font-display text-3xl font-extrabold italic tracking-[-0.03em]">
                         Fibra {suggestion.speedMb} Mbps
@@ -180,8 +180,8 @@ export function Simulator() {
                         .
                       </p>
                     </div>
-                    <WhatsAppCta message={`Olá! Fiz a simulação no site da MEGA+: ${summary}. Podem confirmar a cobertura e as condições para o meu endereço?`}>
-                      Enviar simulação
+                    <WhatsAppCta message={`Olá! Montei minha indicação no site da MEGA+: ${summary}. Podem confirmar a cobertura e as condições para o meu endereço?`}>
+                      Enviar minha indicação
                       <ArrowRight size={16} aria-hidden="true" />
                     </WhatsAppCta>
                   </div>

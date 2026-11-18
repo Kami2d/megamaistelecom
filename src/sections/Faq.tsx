@@ -14,8 +14,8 @@ export function Faq() {
           <div id="contato" className="scroll-mt-28 lg:sticky lg:top-28 lg:self-start">
             <SectionHeading
               eyebrow="Dúvidas frequentes"
-              title="As respostas que faltam para escolher sua internet."
-              description="Antes de contratar, entenda as opções disponíveis e consulte as condições para o seu endereço."
+              title="Tudo o que você precisa saber antes de escolher."
+              description="Antes de contratar, conheça as opções e confirme as condições para o seu endereço."
             />
 
             <Reveal delay={120}>
@@ -28,7 +28,7 @@ export function Faq() {
                   disponíveis para o seu endereço.
                 </p>
                 <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-500">
-                  WhatsApp e telefone
+                  Fale por WhatsApp ou telefone
                 </p>
                 <p className="mt-1 font-display text-2xl font-extrabold italic tracking-[-0.02em] text-ink-950">
                   {siteConfig.contact.phone}
@@ -37,7 +37,7 @@ export function Faq() {
                   message="Olá! Tenho dúvidas sobre os planos da MEGA+ e gostaria de falar com a equipe."
                   className="mt-6 w-full"
                 >
-                  Falar no WhatsApp
+                  Enviar mensagem
                   <MessageCircle size={16} aria-hidden="true" />
                 </WhatsAppCta>
                 <a

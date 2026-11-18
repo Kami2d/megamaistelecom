@@ -12,9 +12,9 @@ export function Objections() {
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading
-              eyebrow="Escolha com confiança"
-              title="Antes de contratar, tenha certeza de que está escolhendo bem."
-              description="Cada casa tem uma rotina. Cada empresa tem uma necessidade. Por isso, escolher sua internet começa com as informações certas."
+              eyebrow="Decida com segurança"
+              title="Antes de assinar, confirme que é a escolha certa para você."
+              description="Cada casa e cada negócio têm demandas próprias. O primeiro passo é ter informações claras, não só números de velocidade."
             />
             <Reveal delay={100}>
               <WhatsAppCta
@@ -22,7 +22,7 @@ export function Objections() {
                 variant="outline-dark"
                 className="mt-8"
               >
-                Tirar minhas dúvidas
+                Esclarecer dúvidas
                 <ArrowRight size={16} aria-hidden="true" />
               </WhatsAppCta>
             </Reveal>

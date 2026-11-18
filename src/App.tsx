@@ -65,7 +65,7 @@ export default function App() {
       <Header />
       <main>
         {route === 'status' ? (
-          <div id="inicio" tabIndex={-1} className="pt-[76px] outline-none">
+          <div id="inicio" tabIndex={-1} className="bg-ink-950 pt-[76px] outline-none">
             <StatusPage />
           </div>
         ) : (

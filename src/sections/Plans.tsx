@@ -21,13 +21,13 @@ export function Plans() {
   }
 
   return (
-    <section id="planos" className="relative -mt-12 rounded-t-[3rem] bg-mist pb-24 pt-24 sm:pb-28 sm:pt-28">
+    <section id="planos" className="relative rounded-t-[3rem] bg-mist pb-24 pt-16 sm:pb-28 sm:pt-20">
       <Container>
         <SectionHeading
-          eyebrow="Planos de internet"
+          eyebrow="Nossos planos"
           align="center"
-          title="A velocidade certa para acompanhar sua vida."
-          description="Cada pessoa usa a internet de um jeito. Compare as opções de 400 a 800 Mbps e escolha a que combina com a sua casa ou empresa."
+          title="A velocidade que se ajusta ao seu dia a dia."
+          description="Cada rotina pede uma conexão diferente. Compare de 400 a 800 Mbps e escolha a ideal para sua casa ou empresa."
         />
 
         <div
@@ -61,7 +61,7 @@ export function Plans() {
               </p>
             </div>
             <WhatsAppCta
-              message={`Olá! Escolhi o plano ${selectedPlan.name} (${selectedPlan.speedMb} Mbps). Gostaria de consultar a cobertura e as condições no meu endereço.`}
+              message={`Olá! Escolhi o plano ${selectedPlan.name} (${selectedPlan.speedMb} Mbps). Gostaria de verificar a cobertura e as condições no meu endereço.`}
               variant="blue"
               className="w-full shrink-0 sm:w-auto"
             >
@@ -73,8 +73,8 @@ export function Plans() {
 
         <p className="mt-6 flex items-start gap-2 text-xs leading-relaxed text-ink-500">
           <Info size={15} className="mt-0.5 shrink-0 text-blue-brand" aria-hidden="true" />
-          Os preços, as condições comerciais e a disponibilidade dos planos devem ser
-          confirmados com a equipe da MEGA+.
+          Valores, condições e disponibilidade são confirmados diretamente com a
+          nossa equipe.
         </p>
       </Container>
     </section>

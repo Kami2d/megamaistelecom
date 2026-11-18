@@ -11,13 +11,10 @@ type PlanCardProps = {
   onNavigate: (index: number) => void
 }
 
-const maxSpeed = Math.max(...plans.map((plan) => plan.speedMb))
-
 export function PlanCard({ plan, selected, onSelect, onNavigate }: PlanCardProps) {
   const featured = Boolean(plan.badge)
   const index = plans.findIndex((item) => item.id === plan.id)
   const message = `Olá! Tenho interesse no plano ${plan.name} (${plan.speedMb} Mbps), por ${formatPrice(plan.monthlyPrice)}/mês. Gostaria de consultar a cobertura e as condições no meu endereço.`
-  const meterWidth = `${(plan.speedMb / maxSpeed) * 100}%`
 
   return (
     <article
@@ -51,13 +48,9 @@ export function PlanCard({ plan, selected, onSelect, onNavigate }: PlanCardProps
       }}
       data-plan-id={plan.id}
       data-featured={featured}
-      className={`plan-card cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-signal ${
-        selected ? 'shadow-[0_0_0_2px_var(--color-coral-accent)]' : ''
-      }`}
+      className="plan-card cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-signal"
     >
-      <span className="plan-meter" aria-hidden="true">
-        <i style={{ width: meterWidth }} />
-      </span>
+      <span className="plan-meter" aria-hidden="true" />
 
       <div className="flex items-center justify-between gap-3">
         <p className={`text-[11px] font-bold uppercase tracking-[0.18em] ${featured ? 'text-white/55' : 'text-ink-500'}`}>
@@ -132,7 +125,7 @@ export function PlanCard({ plan, selected, onSelect, onNavigate }: PlanCardProps
       </ul>
 
       <p className={`rounded-xl px-3 py-2 text-[11px] leading-tight ${featured ? 'bg-white/[0.07] text-white/65' : 'bg-mist-2 text-ink-600'}`}>
-        Com repetidor Wi-Fi · consulte disponibilidade e condições
+        Com repetidor Wi-Fi · sujeito a disponibilidade e condições
       </p>
 
       <WhatsAppCta

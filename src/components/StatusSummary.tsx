@@ -38,11 +38,12 @@ const cards: {
 ]
 
 export function StatusSummary({ services }: StatusSummaryProps) {
-  const operational = services.filter((s) => s.status === 'operational').length
-  const availability = services.length
-    ? Math.round((operational / services.length) * 100)
+  const knownServices = services.filter((s) => s.status !== 'unknown')
+  const operational = knownServices.filter((s) => s.status === 'operational').length
+  const availability = knownServices.length
+    ? Math.round((operational / knownServices.length) * 100)
     : 0
-  const unknown = services.filter((s) => s.status === 'unknown').length
+  const unknown = services.length - knownServices.length
 
   return (
     <div className="rounded-[24px] border border-ink-900/5 bg-white p-6 shadow-card sm:p-8">
@@ -55,7 +56,7 @@ export function StatusSummary({ services }: StatusSummaryProps) {
             {services.length} serviços monitorados
           </h2>
           <p className="mt-1 text-xs text-ink-500">
-            Percentual calculado sobre os dados demonstrativos recebidos.
+            Percentual calculado sobre os serviços com fonte oficial disponível.
           </p>
         </div>
         <div className="lg:min-w-[280px]">

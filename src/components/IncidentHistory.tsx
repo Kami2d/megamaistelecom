@@ -1,8 +1,17 @@
-import { Clock3 } from 'lucide-react'
+import { ArrowUpRight, Clock3 } from 'lucide-react'
 import type { StatusIncident } from '../data/status'
 import { StatusBadge } from './StatusBadge'
 
 export function IncidentHistory({ incidents }: { incidents: StatusIncident[] }) {
+  if (incidents.length === 0) {
+    return (
+      <div className="rounded-[20px] border border-line bg-white p-8 text-center text-sm text-ink-500">
+        Nenhum incidente ativo ou manutenção programada divulgado pelas fontes
+        consultadas neste momento.
+      </div>
+    )
+  }
+
   return (
     <div className="overflow-hidden rounded-[20px] border border-line bg-white">
       <ul className="divide-y divide-line">
@@ -23,16 +32,22 @@ export function IncidentHistory({ incidents }: { incidents: StatusIncident[] }) 
                   <Clock3 size={13} aria-hidden="true" />
                   Início: {incident.startedAt}
                 </span>
-                {incident.resolvedAt && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock3 size={13} aria-hidden="true" />
-                    Resolução: {incident.resolvedAt}
-                  </span>
+                <span>Fonte: {incident.sourceName}</span>
+                {incident.sourceUrl && (
+                  <a
+                    href={incident.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-semibold text-blue-brand hover:text-blue-bright"
+                  >
+                    Ver fonte oficial
+                    <ArrowUpRight size={12} aria-hidden="true" />
+                  </a>
                 )}
               </div>
             </div>
             <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-500/70 sm:text-right">
-              {incident.resolvedAt ? 'Encerrado' : 'Em acompanhamento'}
+              Em acompanhamento
             </span>
           </li>
         ))}
