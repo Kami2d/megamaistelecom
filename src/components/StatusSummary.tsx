@@ -35,12 +35,19 @@ const cards: {
     icon: Wrench,
     accent: 'text-blue-brand',
   },
+  {
+    status: 'unknown',
+    label: 'Sem informação',
+    icon: HelpCircle,
+    accent: 'text-slate-500',
+  },
 ]
 
 export function StatusSummary({ services }: StatusSummaryProps) {
   const knownServices = services.filter((s) => s.status !== 'unknown')
   const operational = knownServices.filter((s) => s.status === 'operational').length
-  const availability = knownServices.length
+  const hasKnownData = knownServices.length > 0
+  const availability = hasKnownData
     ? Math.round((operational / knownServices.length) * 100)
     : 0
   const unknown = services.length - knownServices.length
@@ -56,7 +63,8 @@ export function StatusSummary({ services }: StatusSummaryProps) {
             {services.length} serviços monitorados
           </h2>
           <p className="mt-1 text-xs text-ink-500">
-            Percentual calculado sobre os serviços com fonte oficial disponível.
+            Percentual calculado apenas sobre os serviços com fonte oficial
+            disponível. Status de terceiros provenientes de fontes externas.
           </p>
         </div>
         <div className="lg:min-w-[280px]">
@@ -65,7 +73,7 @@ export function StatusSummary({ services }: StatusSummaryProps) {
               Disponibilidade geral
             </span>
             <span className="font-display text-3xl font-bold tracking-[-0.05em] text-ink-950">
-              {availability}%
+              {hasKnownData ? `${availability}%` : '—'}
             </span>
           </div>
           <div
@@ -74,7 +82,7 @@ export function StatusSummary({ services }: StatusSummaryProps) {
             aria-label="Disponibilidade geral"
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-valuenow={availability}
+            aria-valuenow={hasKnownData ? availability : undefined}
           >
             <div
               className="h-full rounded-full bg-blue-brand transition-[width] duration-500"
@@ -84,12 +92,11 @@ export function StatusSummary({ services }: StatusSummaryProps) {
           <p className="mt-2 flex items-center gap-1.5 text-[11px] text-ink-500">
             <HelpCircle size={12} aria-hidden="true" />
             {unknown} serviço{unknown === 1 ? '' : 's'} sem informação válida
-            {unknown === 1 ? '' : 's'}
           </p>
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {cards.map(({ status, label, icon: Icon, accent }) => (
           <div key={status} className="rounded-xl border border-line bg-mist px-4 py-4">
             <Icon size={18} className={accent} aria-hidden="true" />

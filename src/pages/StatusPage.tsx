@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { RefreshCw, Search } from 'lucide-react'
 import { categories, type ServiceCategory } from '../data/status'
-import { statusProvider, type StatusSnapshot } from '../services/status'
+import {
+  statusPollIntervalMs,
+  statusProvider,
+  type StatusSnapshot,
+} from '../services/status'
 import { Container } from '../components/Container'
 import { IncidentHistory } from '../components/IncidentHistory'
 import { InternetDiagnostics } from '../components/InternetDiagnostics'
@@ -15,21 +19,51 @@ export function StatusPage() {
   const [snapshot, setSnapshot] = useState<StatusSnapshot | null>(null)
   const [category, setCategory] = useState<'all' | ServiceCategory>('all')
   const [query, setQuery] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
+  const refreshingRef = useRef(false)
 
-  const refresh = async () => {
-    setSnapshot(await statusProvider.load())
-  }
+  const refresh = useCallback(async () => {
+    if (refreshingRef.current) return
+    refreshingRef.current = true
+    setRefreshing(true)
+    try {
+      setSnapshot(await statusProvider.load())
+    } finally {
+      refreshingRef.current = false
+      setRefreshing(false)
+    }
+  }, [])
 
   useEffect(() => {
     void refresh()
-  }, [])
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') void refresh()
+    }, statusPollIntervalMs)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') void refresh()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => {
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [refresh])
 
   const visibleServices = useMemo(() => {
     if (!snapshot) return []
     const term = query.trim().toLocaleLowerCase('pt-BR')
     return snapshot.services.filter((service) => {
       const matchesCategory = category === 'all' || service.category === category
-      const matchesQuery = !term || service.name.toLocaleLowerCase('pt-BR').includes(term)
+      const searchable = [
+        service.name,
+        categories.find((item) => item.id === service.category)?.label ?? '',
+        service.sourceName,
+        service.note ?? '',
+        service.incidentDescription ?? '',
+      ]
+      const matchesQuery =
+        !term ||
+        searchable.some((value) => value.toLocaleLowerCase('pt-BR').includes(term))
       return matchesCategory && matchesQuery
     })
   }, [snapshot, category, query])
@@ -41,14 +75,19 @@ export function StatusPage() {
     }))
     .filter((group) => group.services.length > 0)
 
-  const checkedAt = snapshot
-    ? snapshot.checkedAt.toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    : '—'
+  const formatDate = (value: Date | null) =>
+    value
+      ? value.toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : '—'
+
+  const checkedAt = formatDate(snapshot?.checkedAt ?? null)
+  const lastSuccessfulAt = formatDate(snapshot?.lastSuccessfulAt ?? null)
+  const updateLabel = `${Math.round(statusPollIntervalMs / 60_000)} min`
 
   return (
     <>
@@ -63,29 +102,43 @@ export function StatusPage() {
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65">
               Acompanhe a disponibilidade dos principais serviços e plataformas
-              da internet consultando diretamente as fontes oficiais.
+              da internet consultando as fontes oficiais de cada um. As
+              informações são de terceiros e não representam monitoramento
+              direto da rede Mega Mais.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-cyan-signal/35 bg-cyan-signal/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-signal">
-                {snapshot?.mode === 'live' ? 'Dados oficiais' : 'Carregando fontes'}
+                {!snapshot
+                  ? 'Carregando fontes'
+                  : snapshot.origin === 'backend'
+                    ? 'Backend conectado'
+                    : 'Fontes oficiais'}
               </span>
+              <span className="text-xs text-white/60">Última consulta: {checkedAt}</span>
               <span className="text-xs text-white/60">
-                Última consulta: {checkedAt}
+                Última consulta bem-sucedida: {lastSuccessfulAt}
               </span>
               <button
                 type="button"
                 onClick={() => void refresh()}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:border-cyan-signal/60 hover:bg-white/10"
+                disabled={refreshing}
+                aria-busy={refreshing}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:border-cyan-signal/60 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <RefreshCw size={14} aria-hidden="true" />
-                Atualizar consulta
+                <RefreshCw
+                  size={14}
+                  className={refreshing ? 'animate-spin' : ''}
+                  aria-hidden="true"
+                />
+                {refreshing ? 'Atualizando...' : 'Atualizar consulta'}
               </button>
             </div>
             <p className="mt-4 max-w-2xl text-[11px] leading-relaxed text-white/40">
-              Serviços sem API pública consultável aparecem como “Informação
-              indisponível”, com link para a fonte oficial. Nenhum status é
-              inventado quando a consulta falha.
+              Atualização automática a cada {updateLabel}. Serviços sem fonte
+              consultável aparecem como “Informação indisponível”, com link para
+              a fonte oficial. Se uma consulta falhar, nenhum status é inventado:
+              o último estado válido fica registrado apenas como histórico.
             </p>
           </Reveal>
         </Container>
@@ -108,7 +161,7 @@ export function StatusPage() {
           <SectionHeading
             eyebrow="Serviços populares"
             title="Acompanhe as plataformas que você mais usa."
-            description="Filtre por categoria ou pesquise pelo nome. Para cada serviço com fonte oficial confirmada, há um link direto para a página de status da plataforma."
+            description="Filtre por categoria ou pesquise pelo nome. Para cada serviço há um link direto para a página de status oficial da plataforma."
           />
 
           <Reveal delay={80}>

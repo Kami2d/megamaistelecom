@@ -32,6 +32,13 @@ export function IncidentHistory({ incidents }: { incidents: StatusIncident[] }) 
                   <Clock3 size={13} aria-hidden="true" />
                   Início: {incident.startedAt}
                 </span>
+                {incident.components && incident.components.length > 0 && (
+                  <span>Componentes: {incident.components.join(', ')}</span>
+                )}
+                {incident.resolutionEta && (
+                  <span>Previsão informada: {incident.resolutionEta}</span>
+                )}
+                {incident.resolvedAt && <span>Resolvido em: {incident.resolvedAt}</span>}
                 <span>Fonte: {incident.sourceName}</span>
                 {incident.sourceUrl && (
                   <a
@@ -47,7 +54,11 @@ export function IncidentHistory({ incidents }: { incidents: StatusIncident[] }) 
               </div>
             </div>
             <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-500/70 sm:text-right">
-              Em acompanhamento
+              {incident.resolvedAt
+                ? 'Resolvido'
+                : incident.maintenance
+                  ? 'Manutenção programada'
+                  : 'Em acompanhamento'}
             </span>
           </li>
         ))}

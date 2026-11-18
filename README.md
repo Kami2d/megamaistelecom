@@ -149,11 +149,55 @@ controlada em `src/App.tsx` sem adicionar dependências de roteamento.
 - Interface: `src/pages/StatusPage.tsx` e `src/components/Status*`,
   `IncidentHistory`, `InternetDiagnostics`, `NetworkStatus`
 
-Todos os estados de plataformas externas são **demonstrativos** e exibidos com
-aviso explícito. O provider local não faz requisições nem finge verificação em
-tempo real; para integrar fontes oficiais no futuro, basta substituir
-`statusProvider` por um adaptador que implemente `StatusProvider` e normalize
-as respostas em `StatusSnapshot`.
+O catálogo reúne 45 serviços em seis categorias. Cada entrada declara sua
+fonte oficial em `src/data/status.ts`; para adicionar um serviço ou trocar uma
+fonte, basta editar esse arquivo — o restante do painel se adapta
+automaticamente.
+
+Por padrão, o provider consulta diretamente apenas as APIs Statuspage que
+liberam CORS (Twitch, Epic Games, Discord, Cloudflare, GitHub, Zoom e Akamai).
+Os demais permanecem como **“Informação indisponível”**, com link para a fonte
+oficial. Nunca é inferido um status a partir do acesso à página inicial de uma
+plataforma, e as informações de terceiros não são apresentadas como
+monitoramento direto da Mega Mais.
+
+Falhas de consulta não são tratadas como indisponibilidade: o estado atual
+passa a `unknown` e o último estado válido é mantido apenas como histórico, com
+data. O estado da fonte (`sourceState`) é separado do estado do serviço.
+
+### Backend (opcional)
+
+Defina `VITE_STATUS_API_URL` para que o painel consuma um backend próprio em
+vez das fontes com CORS. O endpoint deve responder com:
+
+```json
+{
+  "checkedAt": "2026-11-18T12:00:00Z",
+  "lastSuccessfulAt": "2026-11-18T12:00:00Z",
+  "services": [
+    {
+      "id": "twitch",
+      "status": "operational",
+      "lastUpdated": "12:00",
+      "sourceName": "Twitch Status",
+      "sourceUrl": "https://status.twitch.com/",
+      "incidentDescription": null,
+      "components": null,
+      "resolutionEta": null,
+      "maintenance": false
+    }
+  ],
+  "incidents": []
+}
+```
+
+`status` aceita `operational`, `degraded`, `outage`, `maintenance` ou
+`unknown`. IDs desconhecidos são ignorados e valores inválidos viram
+`unknown`. O backend é responsável por consultar APIs sem CORS, aplicar cache,
+respeitar limites de requisição e tratar erros. O front também mantém cache em
+memória com TTL (`VITE_STATUS_CACHE_TTL_MS`), evita requisições sobrepostas e
+só atualiza com a aba visível. `VITE_STATUS_POLL_INTERVAL_MS` define o intervalo
+do polling (padrão: 3 minutos, dentro da faixa recomendada de 2 a 5).
 
 “Status da Rede Mega Mais” é uma área independente e permanece com a mensagem
 “Informações da rede indisponíveis no momento.” até existir integração com a
