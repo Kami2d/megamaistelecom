@@ -8,7 +8,7 @@ export function Combos() {
   const [featured, ...others] = combos
 
   return (
-    <section id="combos" className="bg-mist py-24 sm:py-28">
+    <section id="combos" className="relative overflow-hidden bg-[radial-gradient(70%_50%_at_0%_0%,rgba(30,107,255,0.06),transparent_60%),radial-gradient(50%_40%_at_100%_100%,rgba(255,106,26,0.05),transparent_60%),linear-gradient(180deg,#eef3fb,#f7faff)] py-24 sm:py-28">
       <Container>
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <SectionHeading

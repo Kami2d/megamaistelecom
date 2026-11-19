@@ -22,7 +22,7 @@ export const benefits: Benefit[] = [
   {
     icon: 'gauge',
     title: 'Alta velocidade',
-    description: 'Planos de 400 a 800 Mbps para acompanhar trabalho, estudo e lazer.',
+    description: 'Planos de 350 a 650 Mbps para acompanhar trabalho, estudo e lazer.',
   },
   {
     icon: 'shield',

@@ -60,7 +60,6 @@ export const siteConfig = {
   navigation: [
     { label: 'Planos', href: '#planos' },
     { label: 'Simulador', href: '#simulador' },
-    { label: 'Diferenciais', href: '#diferenciais' },
     { label: 'Como contratar', href: '#como-contratar' },
     { label: 'Cobertura', href: '#cobertura' },
     { label: 'Dúvidas', href: '#faq' },

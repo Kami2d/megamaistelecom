@@ -16,7 +16,7 @@ export const objections: Objection[] = [
     id: 'velocidade',
     question: 'Qual velocidade combina com minha rotina?',
     answer:
-      'Depende do uso, de quantas pessoas se conectam e das atividades. Nosso simulador compara as opções de 400 a 800 Mbps.',
+      'Depende do uso, de quantas pessoas se conectam e das atividades. Nosso simulador compara as opções de 350 a 650 Mbps.',
   },
   {
     id: 'instalacao',

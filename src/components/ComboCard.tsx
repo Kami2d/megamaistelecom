@@ -54,8 +54,8 @@ export function ComboCard({ combo, featured = false }: ComboCardProps) {
   }
 
   return (
-    <article className="flex h-full flex-col rounded-[1.5rem] border border-ink-900/5 bg-white p-7 shadow-card transition-shadow duration-300 hover:shadow-[0_35px_70px_-40px_rgba(10,28,78,0.5)]">
-      <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-brand/10 text-blue-brand">
+    <article className="group flex h-full flex-col rounded-[1.5rem] border border-ink-900/[0.06] bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-7 shadow-[0_24px_50px_-36px_rgba(10,28,78,0.32)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-brand/15 hover:shadow-[0_35px_70px_-40px_rgba(10,28,78,0.45)]">
+      <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-brand/10 text-blue-brand transition-colors duration-300 group-hover:bg-blue-brand/15">
         <Icon size={21} strokeWidth={1.8} aria-hidden="true" />
       </div>
       <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-brand">

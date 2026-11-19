@@ -8,7 +8,7 @@ import { SectionHeading } from '../components/SectionHeading'
 
 export function Faq() {
   return (
-    <section id="faq" className="bg-mist py-24 sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-[radial-gradient(60%_45%_at_100%_0%,rgba(30,107,255,0.06),transparent_60%),linear-gradient(180deg,#eef3fb,#f7faff)] py-24 sm:py-32">
       <Container>
         <div className="grid gap-14 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
           <div id="contato" className="scroll-mt-28 lg:sticky lg:top-28 lg:self-start">
@@ -19,7 +19,7 @@ export function Faq() {
             />
 
             <Reveal delay={120}>
-              <div className="mt-9 rounded-[1.6rem] bg-white p-6 shadow-card sm:p-7">
+              <div className="mt-9 rounded-[1.6rem] border border-ink-900/[0.06] bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-6 shadow-[0_30px_60px_-36px_rgba(10,28,78,0.35)] sm:p-7">
                 <p className="font-display text-xl font-bold tracking-[-0.02em] text-ink-950">
                   Ainda precisa de ajuda?
                 </p>

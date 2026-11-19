@@ -21,10 +21,9 @@ const homes = [
 ]
 
 const reasons: Record<number, string> = {
-  400: 'Uma opção enxuta para navegar, usar redes e resolver as tarefas do dia a dia.',
-  500: 'Mais folga para dividir a conexão entre chamadas de vídeo, streaming, estudos e trabalho.',
-  600: 'Espaço para vários dispositivos conectados sem disputar velocidade.',
-  800: 'Máxima capacidade para uma rotina digital intensa, com muitos dispositivos e downloads.',
+  350: 'Uma opção enxuta para navegar, estudar e resolver as tarefas do dia a dia.',
+  550: 'Mais velocidade para dividir a conexão entre streaming, trabalho, estudos e videochamadas.',
+  650: 'Mais desempenho para muitos dispositivos conectados e uma rotina digital intensa.',
 }
 
 export function Simulator() {
@@ -44,7 +43,7 @@ export function Simulator() {
       }, 0) +
       (homes.find((item) => item.id === home)?.weight ?? 0)
 
-    const speed = score <= 6 ? 400 : score <= 10 ? 500 : score <= 14 ? 600 : 800
+    const speed = score <= 7 ? 350 : score <= 12 ? 550 : 650
     return plans.find((plan) => plan.speedMb === speed) ?? plans[0]
   }, [people, selectedUses, home])
 

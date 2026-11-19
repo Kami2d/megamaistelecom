@@ -8,7 +8,7 @@ import { WhatsAppCta } from '../components/WhatsAppCta'
 
 export function Coverage() {
   return (
-    <section id="cobertura" className="bg-white py-24 sm:py-28">
+    <section id="cobertura" className="relative overflow-hidden bg-[radial-gradient(60%_55%_at_0%_100%,rgba(98,203,255,0.09),transparent_60%),radial-gradient(40%_40%_at_100%_0%,rgba(30,107,255,0.04),transparent_60%),#ffffff] py-24 sm:py-28">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           <div>

@@ -299,7 +299,7 @@ export function SpeedRing() {
       <div
         role="radiogroup"
         aria-label="Velocidade para simulação"
-        className="glass-panel-strong relative z-10 -mt-12 flex w-full flex-wrap justify-center gap-1 rounded-full p-1.5 sm:-mt-14"
+        className="glass-panel-strong relative z-10 mx-auto -mt-10 flex w-fit max-w-full flex-wrap justify-center gap-0.5 rounded-full p-1 sm:-mt-12"
       >
         {speeds.map((option, index) => (
           <button
@@ -310,7 +310,7 @@ export function SpeedRing() {
             tabIndex={speed === option ? 0 : -1}
             onClick={() => setSpeed(option)}
             onKeyDown={(event) => handleKeyDown(event, index)}
-            className={`rounded-full px-3 py-2.5 font-display text-sm font-bold italic transition-colors sm:px-5 sm:text-base ${
+            className={`rounded-full px-2.5 py-1.5 font-display text-xs font-bold italic transition-colors sm:px-4 sm:py-2 sm:text-sm ${
               speed === option ? 'bg-[linear-gradient(100deg,#1e6bff,#3f8cff)] text-white' : 'text-white/60 hover:text-white'
             }`}
           >

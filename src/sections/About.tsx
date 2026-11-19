@@ -24,7 +24,7 @@ const pillars = [
 
 export function About() {
   return (
-    <section id="sobre" className="bg-white py-24 sm:py-28">
+    <section id="sobre" className="relative overflow-hidden bg-[radial-gradient(55%_45%_at_100%_50%,rgba(30,107,255,0.05),transparent_60%),#ffffff] py-24 sm:py-28">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24">
           <Reveal>

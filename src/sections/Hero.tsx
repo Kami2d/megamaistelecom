@@ -1,18 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { ArrowRight, MapPin, ShieldCheck, Zap } from 'lucide-react'
 import { siteConfig } from '../data/site'
-import { plans } from '../data/plans'
 import { CtaLink } from '../components/CtaLink'
 import { Container } from '../components/Container'
 import { FiberOpticBackground } from '../components/FiberOpticBackground'
 import { Reveal } from '../components/Reveal'
 import { SpeedRing } from '../components/SpeedRing'
-
-const marqueeItems = [
-  ...plans.map((plan) => `${plan.speedMb} Mbps`),
-  'Suporte 24h',
-  'Fibra óptica',
-]
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -59,7 +52,7 @@ export function Hero() {
       ref={sectionRef}
       id="inicio"
       tabIndex={-1}
-      className="relative isolate overflow-hidden bg-ink-950 pb-0 pt-[140px] text-white lg:pt-[170px]"
+      className="relative isolate overflow-hidden bg-ink-950 pb-16 pt-[140px] text-white sm:pb-20 lg:pb-24 lg:pt-[170px]"
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -107,7 +100,7 @@ export function Hero() {
             </h1>
 
             <p className="mt-7 max-w-[560px] text-base leading-relaxed text-white/70 sm:text-lg">
-              Fibra de 400 a 800 Mbps para trabalhar, estudar, curtir seus
+              Fibra de 350 a 650 Mbps para trabalhar, estudar, curtir seus
               conteúdos e manter seu negócio sempre online. Confira a cobertura
               no seu endereço.
             </p>
@@ -125,7 +118,7 @@ export function Hero() {
 
             <ul className="mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-7">
               {[
-                { icon: Zap, label: '400 a 800 Mbps' },
+                { icon: Zap, label: '350 a 650 Mbps' },
                 { icon: ShieldCheck, label: 'Atendimento técnico 24h' },
                 { icon: MapPin, label: 'Presença no Maranhão' },
               ].map(({ icon: Icon, label }) => (
@@ -140,20 +133,6 @@ export function Hero() {
           <Reveal delay={160}>
             <SpeedRing />
           </Reveal>
-        </div>
-
-        <div className="marquee relative mt-16 border-t border-cyan-signal/10 py-6 sm:mt-20">
-          <div className="marquee-track">
-            {[...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, index) => (
-              <span
-                key={`${item}-${index}`}
-                data-fill={index % 3 === 0}
-                data-accent={index % 5 === 4}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
         </div>
       </Container>
     </section>

@@ -20,10 +20,10 @@ export const plans: Plan[] = [
   {
     id: 'wifi-smart',
     name: 'Wi-Fi Smart',
-    speedMb: 400,
-    monthlyPrice: 99.9,
+    speedMb: 350,
+    monthlyPrice: 80,
     punctualityPrice: null,
-    description: 'Para navegar, trabalhar e aproveitar sem travar.',
+    description: 'Para navegar, estudar e acompanhar sua rotina online.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
@@ -35,11 +35,11 @@ export const plans: Plan[] = [
   {
     id: 'wifi-master',
     name: 'Wi-Fi Master',
-    speedMb: 500,
-    monthlyPrice: 119.9,
+    speedMb: 550,
+    monthlyPrice: 100,
     punctualityPrice: null,
     badge: 'Mais escolhido',
-    description: 'Mais folga para dividir a conexão com quem você ama.',
+    description: 'Mais velocidade para streaming, trabalho e vários acessos.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',
@@ -51,25 +51,10 @@ export const plans: Plan[] = [
   {
     id: 'wifi-plus',
     name: 'Wi-Fi Plus',
-    speedMb: 600,
-    monthlyPrice: 129.9,
+    speedMb: 650,
+    monthlyPrice: 120,
     punctualityPrice: null,
-    description: 'Para vários dispositivos conectados ao mesmo tempo.',
-    benefits: [
-      'Internet por fibra óptica',
-      'Wi-Fi para sua casa',
-      'Atendimento técnico 24h',
-    ],
-    uploadMb: null,
-    routers: null,
-  },
-  {
-    id: 'wifi-plus-360',
-    name: 'Wi-Fi Plus 360º',
-    speedMb: 800,
-    monthlyPrice: 149.9,
-    punctualityPrice: null,
-    description: 'Velocidade máxima para uma rotina digital intensa.',
+    description: 'Desempenho para muitos dispositivos e uso intenso no dia a dia.',
     benefits: [
       'Internet por fibra óptica',
       'Wi-Fi para sua casa',

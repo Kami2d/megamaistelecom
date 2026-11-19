@@ -6,7 +6,6 @@ import { PlanSelectionProvider } from './context/PlanSelectionContext'
 import { siteConfig } from './data/site'
 import { StatusPage } from './pages/StatusPage'
 import { About } from './sections/About'
-import { Benefits } from './sections/Benefits'
 import { Combos } from './sections/Combos'
 import { ConversionBanner } from './sections/ConversionBanner'
 import { Coverage } from './sections/Coverage'
@@ -73,7 +72,6 @@ export default function App() {
             <Hero />
             <Plans />
             <Simulator />
-            <Benefits />
             <Combos />
             <Objections />
             <Steps />

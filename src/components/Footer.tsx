@@ -7,9 +7,17 @@ import { Container } from './Container'
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-ink-950 pb-10 pt-20 text-white">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-signal/35 to-transparent"
+        aria-hidden="true"
+      />
       <div className="grid-technical pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
       <div
         className="pointer-events-none absolute -right-40 top-0 h-[420px] w-[420px] rounded-full bg-blue-brand/20 blur-[120px]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -left-32 bottom-32 h-[360px] w-[360px] rounded-full bg-cyan-signal/10 blur-[120px]"
         aria-hidden="true"
       />
 

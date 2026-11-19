@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Menu, MessageCircle, X } from 'lucide-react'
+import { Menu, UserRound, X } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { BrandLogo } from './BrandLogo'
 import { Container } from './Container'
+import { CtaLink } from './CtaLink'
 import { MobileMenu } from './MobileMenu'
-import { WhatsAppCta } from './WhatsAppCta'
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -50,14 +50,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <WhatsAppCta
-              message="Olá! Quero verificar a cobertura da MEGA+ no meu endereço."
+            <CtaLink
+              href={siteConfig.customerPortalUrl}
               size="sm"
+              variant="outline-light"
               className="hidden sm:inline-flex"
             >
-              Verificar cobertura
-              <MessageCircle size={16} aria-hidden="true" />
-            </WhatsAppCta>
+              Área do cliente
+              <UserRound size={16} aria-hidden="true" />
+            </CtaLink>
             <button
               ref={menuTriggerRef}
               type="button"

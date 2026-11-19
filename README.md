@@ -97,8 +97,8 @@ As animações são CSS e IntersectionObserver, sem novas dependências:
 
 - `src/hooks/useInView.ts` dispara uma entrada única de animação quando o
   elemento entra na viewport (disco de 24h, barras de velocidade e timeline).
-- O velocímetro (`src/components/SpeedRing.tsx`) conta de 400 até a velocidade
-  selecionada e anima o arco/ponto de medição na entrada.
+- O velocímetro (`src/components/SpeedRing.tsx`) conta da menor até a maior
+  velocidade dos planos e anima o arco/ponto de medição na entrada.
 - Feixes de fibra, chips flutuantes, órbitas da CTA final e o wordmark gigante
   usam `@keyframes` em `src/styles/components.css`.
 - Títulos de seção (`src/components/SectionHeading.tsx`) usam um divisor “+”
@@ -108,14 +108,14 @@ As animações são CSS e IntersectionObserver, sem novas dependências:
 
 ## Seções da página
 
-A home (`src/App.tsx`) reúne, nesta ordem: Hero, Planos, Simulador, Diferenciais,
-Combos, Objeções, Como contratar, Cobertura, Speed test, Sobre, Dúvidas (FAQ) e
-uma CTA final reforçada. Os componentes ficam em `src/sections/`.
+A home (`src/App.tsx`) reúne, nesta ordem: Hero, Planos, Simulador, Combos,
+Objeções, Como contratar, Cobertura, Speed test, Sobre, Dúvidas (FAQ) e uma CTA
+final reforçada. Os componentes ficam em `src/sections/`.
 
-O redesenho acrescentou **Simulador**, **Diferenciais**, **Objeções** e
-**Como contratar**, além da **CTA final** mais forte e do wordmark gigante
-"MEGA+" no rodapé (`giant-wordmark` em `src/components/Footer.tsx`). O **speed
-test** e a página de **status** (detalhados abaixo) permanecem disponíveis.
+O redesenho acrescentou **Simulador**, **Objeções** e **Como contratar**, além da
+**CTA final** mais forte e do wordmark gigante "MEGA+" no rodapé
+(`giant-wordmark` em `src/components/Footer.tsx`). O **speed test** e a página
+de **status** (detalhados abaixo) permanecem disponíveis.
 
 ## Conteúdo demonstrativo — confirmar antes de publicar
 
@@ -128,8 +128,7 @@ Todos os dados comerciais ficam centralizados em `src/data/`:
   WhatsApp/telefone, o CNPJ `46.434.669/0001-92` e as unidades em Rosário, São
   Luís, Codó e São João Batista foram obtidos do MVP de referência e **precisam
   ser confirmados** antes da publicação.
-- `plans.ts` — catálogo com os planos de 400, 500, 600 e 800 Mbps (R$ 99,90,
-  R$ 119,90, R$ 129,90 e R$ 149,90 por mês). O campo `punctualityPrice` existe
+- `plans.ts` — catálogo com os planos de 350, 550 e 650 Mbps (R$ 80,00, R$ 100,00 e R$ 120,00 por mês). O campo `punctualityPrice` existe
   para manter separado o preço com desconto por pontualidade, mas permanece
   `null` porque o valor não foi fornecido.
 - `objections.ts` — perguntas de objeções exibidas antes da FAQ, com respostas
