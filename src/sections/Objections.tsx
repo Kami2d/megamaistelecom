@@ -7,7 +7,7 @@ import { WhatsAppCta } from '../components/WhatsAppCta'
 
 export function Objections() {
   return (
-    <section id="confianca" className="relative overflow-hidden bg-[radial-gradient(70%_45%_at_100%_0%,rgba(30,107,255,0.06),transparent_60%),linear-gradient(180deg,#ffffff,#f8fbff)] py-24 sm:py-32">
+    <section id="confianca" className="relative z-10 overflow-hidden bg-[radial-gradient(70%_45%_at_100%_0%,rgba(30,107,255,0.06),transparent_60%),linear-gradient(180deg,#ffffff,#f8fbff)] py-24 sm:py-32">
       <Container>
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">

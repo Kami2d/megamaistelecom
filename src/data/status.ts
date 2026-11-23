@@ -1,3 +1,5 @@
+import downdetectorServices from './downdetector-services.json'
+
 /**
  * Catálogo configurável da Central de Status.
  *
@@ -25,6 +27,17 @@ export type ServiceCategory =
   | 'infrastructure'
   | 'internet'
 
+/** Estados do gráfico histórico exibido em cada serviço. */
+export type StatusHistoryStatus = 'operational' | 'degraded' | 'outage'
+
+export type StatusHistoryPoint = {
+  /** Data/hora do ponto em ISO 8601. */
+  at: string
+  status: StatusHistoryStatus
+  /** Volume de relatos no período, quando a fonte informar. */
+  reports?: number
+}
+
 /** Estado da fonte de monitoramento, separado do estado do serviço. */
 export type SourceState = 'ok' | 'error' | 'unconfigured'
 
@@ -51,6 +64,13 @@ export type MonitoredService = {
   status: ServiceStatus
   /** Horário da última consulta bem-sucedida desta fonte. */
   lastUpdated: string
+  /**
+   * Série temporal do gráfico. Só é preenchida com dados reais enviados pelo
+   * backend/integração; o navegador nunca infere um histórico.
+   */
+  history?: StatusHistoryPoint[]
+  /** Página do serviço no Downdetector (fonte complementar independente). */
+  downdetectorUrl: string
   sourceName: string
   sourceUrl: string | null
   source?: StatusSource
@@ -613,11 +633,27 @@ const serviceCatalog: CatalogEntry[] = [
   },
 ]
 
+/**
+ * Slug/país de cada serviço no Downdetector, compartilhados com o proxy
+ * backend (`server/downdetector.mjs`). O Downdetector é fonte independente
+ * baseada em relatos de usuários, não uma fonte oficial das plataformas.
+ */
+const downdetectorMonitors = new Map(
+  downdetectorServices.map((item) => [item.id, item] as const),
+)
+
+function getDowndetectorUrl(id: string): string {
+  const entry = downdetectorMonitors.get(id)
+  const domain = entry?.site === 'br' ? 'downdetector.com.br' : 'downdetector.com'
+  return entry ? `https://${domain}/status/${entry.slug}` : 'https://downdetector.com/'
+}
+
 /** Estado neutro usado antes da primeira consulta e como fallback. */
 export const monitoredServices: MonitoredService[] = serviceCatalog.map((entry) => ({
   ...entry,
   status: 'unknown',
   lastUpdated: '—',
+  downdetectorUrl: getDowndetectorUrl(entry.id),
   sourceName: entry.source.sourceName,
   sourceUrl: entry.source.sourceUrl,
   sourceState: entry.source.browserAccess ? undefined : 'unconfigured',

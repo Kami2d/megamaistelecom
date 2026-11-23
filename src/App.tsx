@@ -4,9 +4,10 @@ import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { PlanSelectionProvider } from './context/PlanSelectionContext'
 import { siteConfig } from './data/site'
+import { CustomerPortalPage } from './pages/CustomerPortalPage'
 import { StatusPage } from './pages/StatusPage'
 import { About } from './sections/About'
-import { Combos } from './sections/Combos'
+import { AppPromo } from './sections/AppPromo'
 import { ConversionBanner } from './sections/ConversionBanner'
 import { Coverage } from './sections/Coverage'
 import { Faq } from './sections/Faq'
@@ -14,10 +15,9 @@ import { Hero } from './sections/Hero'
 import { Objections } from './sections/Objections'
 import { Plans } from './sections/Plans'
 import { Simulator } from './sections/Simulator'
-import { SpeedTest } from './sections/SpeedTest'
 import { Steps } from './sections/Steps'
 
-type Route = 'home' | 'status'
+type Route = 'home' | 'status' | 'cliente'
 
 const homeHashes = new Set<string>(
   siteConfig.navigation.filter((item) => item.href !== '#status').map((item) => item.href),
@@ -25,33 +25,40 @@ const homeHashes = new Set<string>(
 
 function routeFromHash(hash: string, current: Route): Route {
   if (hash.startsWith('#status')) return 'status'
-  if (homeHashes.has(hash)) return 'home'
+  if (hash.startsWith('#cliente')) return 'cliente'
+  if (!hash || hash === '#inicio' || homeHashes.has(hash)) return 'home'
   return current
 }
 
 export default function App() {
   const [route, setRoute] = useState<Route>(() => routeFromHash(window.location.hash, 'home'))
+  const [hash, setHash] = useState(() => window.location.hash)
 
   useEffect(() => {
     const handleHashChange = () => {
-      setRoute((current) => routeFromHash(window.location.hash, current))
+      const nextHash = window.location.hash
+      setHash(nextHash)
+      setRoute((current) => routeFromHash(nextHash, current))
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
   useEffect(() => {
-    if (route === 'status') {
+    if (route === 'status' || route === 'cliente') {
       window.scrollTo({ top: 0, behavior: 'auto' })
       return
     }
-    const hash = window.location.hash.slice(1)
-    if (!hash || hash.startsWith('status')) return
+    const target = hash.slice(1)
+    if (!target || target === 'inicio') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     const frame = window.requestAnimationFrame(() => {
-      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' })
+      document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' })
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [route])
+  }, [route, hash])
 
   return (
     <PlanSelectionProvider>
@@ -67,16 +74,19 @@ export default function App() {
           <div id="inicio" tabIndex={-1} className="bg-ink-950 pt-[76px] outline-none">
             <StatusPage />
           </div>
+        ) : route === 'cliente' ? (
+          <div id="inicio" tabIndex={-1} className="bg-ink-950 pt-[76px] outline-none">
+            <CustomerPortalPage />
+          </div>
         ) : (
           <>
             <Hero />
             <Plans />
             <Simulator />
-            <Combos />
+            <AppPromo />
             <Objections />
             <Steps />
             <Coverage />
-            <SpeedTest />
             <About />
             <Faq />
             <ConversionBanner />

@@ -1,0 +1,29 @@
+{
+  "_comment": "Exemplo de base local da Provider Enrichment API. Copie para server/subscribers.json e substitua pelos dados reais dos assinantes. IPs abaixo são de documentação (RFC 5737 / RFC 3849). Nunca comite dados reais de clientes.",
+  "subscribers": [
+    {
+      "ipv4": ["192.0.2.10"],
+      "ipv6": ["2001:db8::10"],
+      "ports": [12974],
+      "service": {
+        "type": "residential",
+        "technology": "fttp",
+        "display": {
+          "provisioned": { "downloadMbps": 1000, "uploadMbps": 500 },
+          "brand": "MEGA+ Fibra",
+          "supportUrl": "https://www.megamaistelecom.com.br/#contato",
+          "isThrottled": false
+        },
+        "location": {
+          "latitude": -2.53,
+          "longitude": -44.3,
+          "source": "geoip"
+        },
+        "supplementalData": {
+          "proprietary": {},
+          "nonproprietary": {}
+        }
+      }
+    }
+  ]
+}

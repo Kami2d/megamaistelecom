@@ -3,9 +3,11 @@ import {
   statusUnknownMessage,
   type MonitoredService,
   type ServiceStatus,
+  type StatusHistoryPoint,
   type StatusIncident,
   type StatusSource,
 } from '../data/status'
+import { loadDowndetectorFeed } from './downdetector'
 
 export type StatusSnapshot = {
   services: MonitoredService[]
@@ -177,6 +179,49 @@ function toServiceStatus(value: unknown): ServiceStatus {
     : 'unknown'
 }
 
+const maxHistoryPoints = 48
+const historyStatuses = new Set<StatusHistoryPoint['status']>([
+  'operational',
+  'degraded',
+  'outage',
+])
+
+/** Série do gráfico: apenas pontos válidos e reconhecidos são aceitos. */
+function normalizeHistory(value: unknown): StatusHistoryPoint[] | undefined {
+  if (!Array.isArray(value)) return undefined
+
+  const points = value
+    .map((item) => {
+      const record = asRecord(item)
+      const at = asString(record?.at) ?? asString(record?.timestamp)
+      const status = record?.status
+      if (
+        !at ||
+        Number.isNaN(new Date(at).getTime()) ||
+        !historyStatuses.has(status as StatusHistoryPoint['status'])
+      ) {
+        return null
+      }
+
+      const reports = record?.reports
+      const validReports =
+        typeof reports === 'number' && Number.isFinite(reports) && reports >= 0
+          ? reports
+          : undefined
+
+      return {
+        at,
+        status: status as StatusHistoryPoint['status'],
+        ...(validReports !== undefined ? { reports: validReports } : {}),
+      }
+    })
+    .filter((point): point is StatusHistoryPoint => point !== null)
+    .sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime())
+    .slice(-maxHistoryPoints)
+
+  return points.length ? points : undefined
+}
+
 async function fetchJson<T>(url: string): Promise<T> {
   const controller = new AbortController()
   const timer = window.setTimeout(() => controller.abort(), requestTimeoutMs)
@@ -288,6 +333,7 @@ function buildUnconfigured(
     status: 'unknown',
     lastUpdated: previous?.services.find((item) => item.id === service.id)?.lastUpdated ?? '—',
     sourceState: 'unconfigured',
+    history: undefined,
     lastKnownStatus: undefined,
     lastKnownAt: undefined,
     incidentDescription: undefined,
@@ -310,6 +356,7 @@ function buildSourceFailure(
     status: 'unknown',
     lastUpdated: previous?.services.find((item) => item.id === service.id)?.lastUpdated ?? '—',
     sourceState: 'error',
+    history: undefined,
     ...preserveHistory(service, previous),
     incidentDescription: undefined,
     incidentStartedAt: undefined,
@@ -347,6 +394,7 @@ function buildBrowserSnapshot(
       status: report.status,
       lastUpdated: report.lastUpdated,
       sourceState: 'ok',
+      history: undefined,
       lastKnownStatus: undefined,
       lastKnownAt: undefined,
       incidentDescription: report.incidentDescription,
@@ -406,7 +454,9 @@ function normalizeBackendSnapshot(
       lastUpdated: asString(raw.lastUpdated) ?? timeLabel,
       sourceName: asString(raw.sourceName) ?? service.sourceName,
       sourceUrl: safeUrl(raw.sourceUrl) ?? service.sourceUrl,
+      downdetectorUrl: safeUrl(raw.downdetectorUrl) ?? service.downdetectorUrl,
       sourceState: 'ok',
+      history: normalizeHistory(raw.history),
       lastKnownStatus: undefined,
       lastKnownAt: undefined,
       incidentDescription: asString(raw.incidentDescription),
@@ -499,6 +549,43 @@ async function loadFromBackend(previous: StatusSnapshot | null): Promise<{
   }
 }
 
+/**
+ * Complementa o snapshot com os dados do proxy do Downdetector. O status da
+ * API só substitui um serviço sem fonte oficial consultável; histórico e
+ * volume de relatos são anexados a todos os serviços com dados válidos.
+ */
+async function applyDowndetector(snapshot: StatusSnapshot): Promise<StatusSnapshot> {
+  const feed = await loadDowndetectorFeed()
+  if (!feed) return snapshot
+
+  const byId = new Map(feed.services.map((item) => [item.id, item]))
+  const checkedAt = new Date(feed.checkedAt)
+
+  const services = snapshot.services.map((service) => {
+    const data = byId.get(service.id)
+    if (!data) return service
+
+    const useFeedStatus = service.status === 'unknown' && Boolean(data.status)
+    return {
+      ...service,
+      status: useFeedStatus ? (data.status as ServiceStatus) : service.status,
+      sourceName: useFeedStatus ? 'Downdetector' : service.sourceName,
+      sourceState: useFeedStatus ? 'ok' : service.sourceState,
+      note: useFeedStatus
+        ? 'Status segundo relatos de usuários no Downdetector, não uma fonte oficial da plataforma.'
+        : service.note,
+      lastUpdated: useFeedStatus ? formatTime(checkedAt) : service.lastUpdated,
+      history: data.history,
+    }
+  })
+
+  return {
+    ...snapshot,
+    services,
+    lastSuccessfulAt: snapshot.lastSuccessfulAt ?? checkedAt,
+  }
+}
+
 let cachedSnapshot: StatusSnapshot | null = null
 let lastFetchAt = 0
 let inFlight: Promise<StatusSnapshot> | null = null
@@ -517,11 +604,12 @@ export const liveStatusProvider: StatusProvider = {
         ? await loadFromBackend(cachedSnapshot)
         : { snapshot: await loadFromBrowser(cachedSnapshot), success: true }
 
+      const snapshot = await applyDowndetector(result.snapshot)
       if (result.success) {
-        cachedSnapshot = result.snapshot
+        cachedSnapshot = snapshot
         lastFetchAt = Date.now()
       }
-      return result.snapshot
+      return snapshot
     })().finally(() => {
       inFlight = null
     })

@@ -8,7 +8,7 @@ import { WhatsAppCta } from '../components/WhatsAppCta'
 
 const uses = [
   { label: 'Navegação e redes', weight: 1 },
-  { label: 'Streaming no dia a dia', weight: 2 },
+  { label: 'Filmes e séries', weight: 2 },
   { label: 'Trabalho ou aulas online', weight: 3 },
   { label: 'Conteúdo em 4K', weight: 4 },
   { label: 'Jogos online', weight: 4 },
@@ -29,7 +29,7 @@ const reasons: Record<number, string> = {
 export function Simulator() {
   const [people, setPeople] = useState(3)
   const [selectedUses, setSelectedUses] = useState<string[]>([
-    'Streaming no dia a dia',
+    'Filmes e séries',
     'Trabalho ou aulas online',
   ])
   const [home, setHome] = useState('compact')

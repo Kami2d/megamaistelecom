@@ -1,8 +1,9 @@
-import { ArrowRight, Info } from 'lucide-react'
+import { ArrowRight, Info, Sparkles } from 'lucide-react'
 import { usePlanSelection } from '../context/PlanSelectionContext'
 import { plans } from '../data/plans'
 import { formatPrice } from '../lib/format'
 import { Container } from '../components/Container'
+import { CtaLink } from '../components/CtaLink'
 import { PlanCard } from '../components/PlanCard'
 import { WhatsAppCta } from '../components/WhatsAppCta'
 import { Reveal } from '../components/Reveal'
@@ -77,14 +78,25 @@ export function Plans() {
                 </span>
               </p>
             </div>
-            <WhatsAppCta
-              message={`Olá! Escolhi o plano ${selectedPlan.name} (${selectedPlan.speedMb} Mbps). Gostaria de verificar a cobertura e as condições no meu endereço.`}
-              variant="blue"
-              className="relative w-full shrink-0 sm:w-auto"
-            >
-              Seguir com este plano
-              <ArrowRight size={16} aria-hidden="true" />
-            </WhatsAppCta>
+            <div className="relative flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+              <CtaLink
+                href="#simulador"
+                variant="outline-light"
+                size="sm"
+                className="w-full shrink-0 sm:w-auto"
+              >
+                Ainda em dúvida? Monte seu plano
+                <Sparkles size={16} aria-hidden="true" />
+              </CtaLink>
+              <WhatsAppCta
+                message={`Olá! Escolhi o plano ${selectedPlan.name} (${selectedPlan.speedMb} Mbps). Gostaria de verificar a cobertura e as condições no meu endereço.`}
+                variant="blue"
+                className="w-full shrink-0 sm:w-auto"
+              >
+                Seguir com este plano
+                <ArrowRight size={16} aria-hidden="true" />
+              </WhatsAppCta>
+            </div>
           </div>
         </Reveal>
 

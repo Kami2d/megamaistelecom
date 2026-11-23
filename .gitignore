@@ -9,3 +9,6 @@ dist
 .env
 .env.*
 !.env.example
+
+# Dados reais de assinantes da Provider Enrichment API (nunca versionar)
+server/subscribers.json

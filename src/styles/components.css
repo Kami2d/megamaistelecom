@@ -891,11 +891,25 @@
     color: var(--color-ink-800);
     box-shadow: 0 8px 20px -10px rgba(98, 203, 255, 0.9);
   }
+
+  .app-promo-phone {
+    animation: app-promo-float 6s ease-in-out infinite;
+  }
 }
 
 @keyframes plan-neon {
   to {
     --neon-angle: 360deg;
+  }
+}
+
+@keyframes app-promo-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
   }
 }
 
@@ -1034,3 +1048,4 @@
     opacity: 0;
   }
 }
+

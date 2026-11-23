@@ -10,8 +10,18 @@ const fromEnv = (key: string, fallback: string) => {
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
 }
 
-const configuredPortalUrl = fromEnv('VITE_CUSTOMER_PORTAL_URL', '#contato')
+const configuredPortalUrl = fromEnv(
+  'VITE_CUSTOMER_PORTAL_URL',
+  'https://meganettelecom.sgp.net.br/accounts/central/login?next=/central/home/',
+)
 const safePortalUrl = /^(#|https?:\/\/)/.test(configuredPortalUrl) ? configuredPortalUrl : '#contato'
+
+const defaultPlayStoreUrl =
+  'https://play.google.com/store/apps/details?id=com.appnex.megamaistelecom'
+const configuredPlayStoreUrl = fromEnv('VITE_PLAY_STORE_URL', defaultPlayStoreUrl)
+const safePlayStoreUrl = configuredPlayStoreUrl.startsWith('https://play.google.com/')
+  ? configuredPlayStoreUrl
+  : defaultPlayStoreUrl
 
 /**
  * Legacy placeholder kept only as a guard: if an old deploy still sets this
@@ -31,24 +41,25 @@ export const siteConfig = {
   whatsappDefaultMessage:
     'Olá! Vim pelo site da MEGA+ Telecom e gostaria de verificar a cobertura no meu endereço.',
   customerPortalUrl: safePortalUrl,
+  playStoreUrl: safePlayStoreUrl,
   instagramUrl: 'https://www.instagram.com/megamais.telecom/',
   cnpj: '46.434.669/0001-92',
-  locations: ['Rosário', 'São Luís', 'Codó', 'São João Batista'],
+  locations: ['São Luís', 'Rosário', 'Presidente Juscelino', 'Barreirinhas'],
   units: [
     {
-      name: 'Rosário · sede',
-      address: 'Rua Santa Luzia, 158, Centro, Rosário – MA, 65150-000',
-    },
-    {
-      name: 'São Luís',
+      name: 'São Luís · sede',
       address: 'R. Principal, nº 05, Cruzeiro de Santa Bárbara, São Luís – MA, 65059-815',
     },
     {
-      name: 'Codó',
-      address: 'Av. Cristóvão Colombo, Trizidela, Codó – MA, 65400-000',
+      name: 'Rosário',
+      address: 'Rua Santa Luzia, 158, Centro, Rosário – MA, 65150-000',
     },
     {
-      name: 'São João Batista',
+      name: 'Presidente Juscelino',
+      address: 'Maranhão',
+    },
+    {
+      name: 'Barreirinhas',
       address: 'Maranhão',
     },
   ],

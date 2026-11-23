@@ -68,7 +68,7 @@ export function About() {
                 realmente importam.
               </p>
               <p className="mt-4 text-[15px] leading-relaxed text-ink-600">
-                Estamos presentes em {siteConfig.locations.slice(0, 3).join(', ')} e
+                Estamos presentes em {siteConfig.locations.join(', ')} e
                 região, com atendimento sujeito à área de cobertura.
               </p>
 

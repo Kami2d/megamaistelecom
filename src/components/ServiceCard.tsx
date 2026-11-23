@@ -45,6 +45,7 @@ import {
   statusUnknownMessage,
 } from '../data/status'
 import { StatusBadge } from './StatusBadge'
+import { StatusHistoryChart } from './StatusHistoryChart'
 
 const serviceIcons: Record<string, LucideIcon> = {
   youtube: Youtube,
@@ -166,24 +167,38 @@ export function ServiceCard({ service }: { service: MonitoredService }) {
         <p className="mt-3 text-xs leading-relaxed text-ink-500">{service.note}</p>
       )}
 
-      {service.sourceUrl && (
+      <StatusHistoryChart points={service.history} />
+
+      <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-4">
+        {service.sourceUrl ? (
+          <a
+            href={service.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-brand transition-colors hover:text-blue-bright"
+          >
+            {service.sourceName === 'Downdetector'
+              ? 'Status: Downdetector'
+              : 'Fonte oficial'}
+            <ArrowUpRight size={12} aria-hidden="true" />
+          </a>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 text-[11px] text-ink-500">
+            <Clock3 size={12} aria-hidden="true" />
+            Sem link de fonte disponível
+          </span>
+        )}
+
         <a
-          href={service.sourceUrl}
+          href={service.downdetectorUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[11px] font-semibold text-blue-brand transition-colors hover:text-blue-bright"
+          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-brand transition-colors hover:text-blue-bright"
         >
-          Fonte oficial
+          Downdetector
           <ArrowUpRight size={12} aria-hidden="true" />
         </a>
-      )}
-
-      {!service.sourceUrl && (
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[11px] text-ink-500">
-          <Clock3 size={12} aria-hidden="true" />
-          Sem link de fonte disponível
-        </span>
-      )}
+      </div>
     </article>
   )
 }

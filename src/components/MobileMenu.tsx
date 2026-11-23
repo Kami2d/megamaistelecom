@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from 'react'
-import { ArrowUpRight, Instagram, MessageCircle } from 'lucide-react'
+import { ArrowUpRight, Instagram, MessageCircle, Smartphone } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { isWhatsAppConfigured, whatsappUrl } from '../lib/whatsapp'
 import { BrandLogo } from './BrandLogo'
@@ -121,7 +121,7 @@ export function MobileMenu({ open, onClose, triggerRef }: MobileMenuProps) {
             </button>
           )}
           <a
-            href={siteConfig.customerPortalUrl}
+            href="#cliente"
             onClick={onClose}
             className="cta-pill w-full bg-white/[0.06] text-white"
             data-variant="outline-light"
@@ -129,6 +129,18 @@ export function MobileMenu({ open, onClose, triggerRef }: MobileMenuProps) {
           >
             Área do Cliente
             <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+          <a
+            href={siteConfig.playStoreUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onClose}
+            className="cta-pill w-full bg-cyan-signal/10 text-cyan-signal"
+            data-variant="outline-light"
+            data-size="md"
+          >
+            Instalar aplicativo
+            <Smartphone size={16} aria-hidden="true" />
           </a>
           <div className="flex items-center justify-between border-t border-white/10 pt-6">
             <BrandLogo compact />

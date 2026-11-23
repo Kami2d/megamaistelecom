@@ -87,7 +87,7 @@ export function Hero() {
         <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
           <Reveal>
             <span className="eyebrow-pill">
-              Fibra óptica em {siteConfig.locations.slice(0, 2).join(' e ')} e região
+              Fibra óptica em {siteConfig.locations.join(', ')} e região
             </span>
 
             <h1 className="mt-8 max-w-[720px] font-display text-[clamp(2.9rem,6.1vw,5.9rem)] font-extrabold italic leading-[0.95] tracking-[-0.03em]">

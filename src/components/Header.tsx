@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Menu, UserRound, X } from 'lucide-react'
+import { Menu, Smartphone, UserRound, X } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { BrandLogo } from './BrandLogo'
 import { Container } from './Container'
@@ -50,8 +50,19 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <a
+              href={siteConfig.playStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instalar o aplicativo MEGA+ na Google Play"
+              title="Instalar o aplicativo MEGA+"
+              className="glass-panel inline-flex h-11 items-center gap-2 rounded-full px-3 text-white transition-colors hover:bg-white/15 sm:px-4"
+            >
+              <Smartphone size={17} className="text-cyan-signal" aria-hidden="true" />
+              <span className="hidden text-xs font-semibold xl:inline">Baixar app</span>
+            </a>
             <CtaLink
-              href={siteConfig.customerPortalUrl}
+              href="#cliente"
               size="sm"
               variant="outline-light"
               className="hidden sm:inline-flex"

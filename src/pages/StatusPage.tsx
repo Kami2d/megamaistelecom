@@ -101,10 +101,11 @@ export function StatusPage() {
               Central de Status
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65">
-              Acompanhe a disponibilidade dos principais serviços e plataformas
-              da internet consultando as fontes oficiais de cada um. As
-              informações são de terceiros e não representam monitoramento
-              direto da rede Mega Mais.
+              Acompanhe a disponibilidade dos principais serviços consultando
+              as fontes oficiais de cada um e o histórico do Downdetector. As
+              informações são de terceiros — o Downdetector se baseia em relatos
+              de usuários — e não representam monitoramento direto da rede Mega
+              Mais.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -136,9 +137,10 @@ export function StatusPage() {
             </div>
             <p className="mt-4 max-w-2xl text-[11px] leading-relaxed text-white/40">
               Atualização automática a cada {updateLabel}. Serviços sem fonte
-              consultável aparecem como “Informação indisponível”, com link para
-              a fonte oficial. Se uma consulta falhar, nenhum status é inventado:
-              o último estado válido fica registrado apenas como histórico.
+              consultável aparecem como “Informação indisponível”, com links
+              para a fonte oficial e para o Downdetector. Se uma consulta
+              falhar, nenhum status é inventado. Os gráficos só exibem dados
+              reais enviados pelo backend; sem isso, não são exibidos.
             </p>
           </Reveal>
         </Container>
@@ -161,7 +163,7 @@ export function StatusPage() {
           <SectionHeading
             eyebrow="Serviços populares"
             title="Acompanhe as plataformas que você mais usa."
-            description="Filtre por categoria ou pesquise pelo nome. Para cada serviço há um link direto para a página de status oficial da plataforma."
+            description="Filtre por categoria ou pesquise pelo nome. Cada serviço traz links para a fonte oficial e para o Downdetector, além do gráfico de histórico quando houver dados."
           />
 
           <Reveal delay={80}>
