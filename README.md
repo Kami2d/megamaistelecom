@@ -163,9 +163,8 @@ O Downdetector é uma fonte independente baseada em relatos de usuários, não u
 fonte oficial das plataformas, e **não oferece API pública gratuita**: a API v2
 exige assinatura Enterprise, `client_id`/`client_secret` e token Bearer. Por
 isso o navegador nunca consulta o Downdetector diretamente e nenhum status é
-inventado a partir da página dele. Com as credenciais configuradas no proxy, o
-gráfico de cada serviço é alimentado pelo campo `history` retornado pela API;
-sem isso, o gráfico simplesmente não é exibido no card.
+inventado a partir da página dele. A integração com o proxy não está ativada no
+front, então o gráfico de histórico simplesmente não é exibido no card.
 
 Por padrão, o provider consulta diretamente apenas as APIs Statuspage que
 liberam CORS (Twitch, Epic Games, Discord, Cloudflare, GitHub, Zoom e Akamai).
@@ -178,49 +177,12 @@ Falhas de consulta não são tratadas como indisponibilidade: o estado atual
 passa a `unknown` e o último estado válido é mantido apenas como histórico, com
 data. O estado da fonte (`sourceState`) é separado do estado do serviço.
 
-### Backend (opcional)
+### Consulta e atualização
 
-Defina `VITE_STATUS_API_URL` para que o painel consuma um backend próprio em
-vez das fontes com CORS. O endpoint deve responder com:
-
-```json
-{
-  "checkedAt": "2026-11-18T12:00:00Z",
-  "lastSuccessfulAt": "2026-11-18T12:00:00Z",
-  "services": [
-    {
-      "id": "twitch",
-      "status": "operational",
-      "lastUpdated": "12:00",
-      "sourceName": "Twitch Status",
-      "sourceUrl": "https://status.twitch.com/",
-      "downdetectorUrl": "https://downdetector.com/status/twitch",
-      "history": [
-        { "at": "2026-11-22T10:00:00Z", "status": "operational", "reports": 4 },
-        { "at": "2026-11-22T11:00:00Z", "status": "degraded", "reports": 38 },
-        { "at": "2026-11-22T12:00:00Z", "status": "outage", "reports": 210 }
-      ],
-      "incidentDescription": null,
-      "components": null,
-      "resolutionEta": null,
-      "maintenance": false
-    }
-  ],
-  "incidents": []
-}
-```
-
-`status` aceita `operational`, `degraded`, `outage`, `maintenance` ou
-`unknown`. IDs desconhecidos são ignorados e valores inválidos viram
-`unknown`. O campo opcional `history` alimenta o gráfico do card: cada ponto
-precisa de `at` (ISO 8601) e `status` (`operational`, `degraded` ou `outage`);
-`reports` é opcional e define a altura da barra. São aceitos no máximo 48 pontos,
-ordenados por data; pontos inválidos são descartados. O backend é responsável
-por consultar APIs sem CORS e com credenciais, aplicar cache, respeitar limites
-de requisição e tratar erros. O front também mantém cache em
-memória com TTL (`VITE_STATUS_CACHE_TTL_MS`), evita requisições sobrepostas e
-só atualiza com a aba visível. `VITE_STATUS_POLL_INTERVAL_MS` define o intervalo
-do polling (padrão: 3 minutos, dentro da faixa recomendada de 2 a 5).
+O painel consulta diretamente as fontes oficiais com CORS e não depende de
+variáveis de ambiente. O polling e o cache em memória são fixos em 3 minutos, o
+timeout por requisição é de 8 segundos, e novas consultas só acontecem com a aba
+visível. Requisições sobrepostas são evitadas.
 
 ### Downdetector API v2 (proxy backend)
 
@@ -244,12 +206,11 @@ abaixo disso = operacional. O limite de requisições é respeitado com cache em
 memória (`DOWNDETECTOR_CACHE_TTL_MS`) e concorrência configurável
 (`DOWNDETECTOR_CONCURRENCY`).
 
-Defina `VITE_DOWNDETECTOR_API_URL` no front (padrão no `.env.example`) para
-anexar os dados ao painel. O status da API substitui apenas serviços sem fonte
-oficial consultável; os demais mantêm o status oficial e recebem só o gráfico.
-Se as credenciais estiverem ausentes, o proxy responde `503`, o front segue
-funcionando e os gráficos permanecem sem dados. Serviços sem empresa
-correspondente na API são ignorados — nunca recebem um status inventado.
+A integração desse proxy com o painel não está ativada no front: o navegador
+não consulta o proxy e nenhum dado dele é anexado automaticamente aos cards. O
+proxy continua disponível para consultas manuais quando as credenciais são
+configuradas; sem elas, responde `503`. Serviços sem empresa correspondente na
+API são ignorados — nunca recebem um status inventado.
 
 “Status da Rede Mega Mais” é uma área independente e permanece com a mensagem
 “Informações da rede indisponíveis no momento.” até existir integração com a

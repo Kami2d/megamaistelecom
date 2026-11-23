@@ -17,11 +17,8 @@ export type DowndetectorFeed = {
   services: DowndetectorServiceData[]
 }
 
-/** URL do proxy backend que guarda as credenciais da API do Downdetector. */
-export const downdetectorApiUrl =
-  typeof import.meta.env.VITE_DOWNDETECTOR_API_URL === 'string'
-    ? import.meta.env.VITE_DOWNDETECTOR_API_URL.trim()
-    : ''
+/** Integração com o proxy do Downdetector desativada neste projeto. */
+export const downdetectorApiUrl = ''
 
 const validStatuses = new Set<DowndetectorStatus>([
   'operational',

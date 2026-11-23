@@ -27,29 +27,14 @@ export interface StatusProvider {
   load(): Promise<StatusSnapshot>
 }
 
-function positiveInt(value: unknown, fallback: number): number {
-  const parsed = typeof value === 'string' || typeof value === 'number' ? Number(value) : NaN
-  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : fallback
-}
+/** O painel consulta diretamente as fontes oficiais que liberam CORS. */
+export const statusBackendUrl = ''
 
-/**
- * Quando definida, a página passa a consumir apenas este endpoint (backend).
- * O contrato de resposta está documentado no README. Sem ela, são consultadas
- * diretamente apenas as fontes oficiais que liberam CORS.
- */
-export const statusBackendUrl =
-  typeof import.meta.env.VITE_STATUS_API_URL === 'string'
-    ? import.meta.env.VITE_STATUS_API_URL.trim()
-    : ''
+/** Intervalo do polling: 3 minutos, dentro da faixa recomendada de 2 a 5. */
+export const statusPollIntervalMs = 180_000
 
-/** Intervalo do polling, entre 2 e 5 minutos por padrão. */
-export const statusPollIntervalMs = positiveInt(
-  import.meta.env.VITE_STATUS_POLL_INTERVAL_MS,
-  180_000,
-)
-
-const cacheTtlMs = positiveInt(import.meta.env.VITE_STATUS_CACHE_TTL_MS, 180_000)
-const requestTimeoutMs = positiveInt(import.meta.env.VITE_STATUS_REQUEST_TIMEOUT_MS, 8_000)
+const cacheTtlMs = 180_000
+const requestTimeoutMs = 8_000
 
 type StatuspageComponent = { id?: string; name?: string; status?: string }
 
