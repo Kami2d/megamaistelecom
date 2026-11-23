@@ -53,11 +53,11 @@ export function AppPromo() {
                 </a>
 
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/70">
+                  <span className="-translate-y-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/70">
                     <Smartphone size={14} className="text-cyan-signal" aria-hidden="true" />
                     Para Android
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/70">
+                  <span className="-translate-y-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/70">
                     <ShieldCheck size={14} className="text-cyan-signal" aria-hidden="true" />
                     Download pela Google Play
                   </span>
@@ -66,26 +66,26 @@ export function AppPromo() {
             </Reveal>
           </div>
 
-          <Reveal delay={180}>
-            <div className="relative mx-auto h-[360px] w-full sm:h-[420px] lg:h-[460px]">
+          <Reveal delay={180} className="self-stretch">
+            <div className="relative mx-auto h-full min-h-[360px] w-full sm:min-h-[420px] lg:min-h-[460px]">
               <div
                 className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-bright/20 blur-[80px]"
                 aria-hidden="true"
               />
-              <div className="absolute left-1/2 top-0 w-[min(92vw,520px)] max-w-none -translate-x-1/2">
-                <img
-                  src="/images/celular.png"
-                  alt="Celular exibindo o aplicativo da MEGA+"
-                  width={563}
-                  height={1118}
-                  loading="lazy"
-                  className="app-promo-phone relative z-10 w-full"
-                />
+              {/* A máscara acompanha a área visível do celular, então o fade nunca
+                  fica acima da borda da seção nem corta o aparelho no meio. */}
+              <div className="app-promo-phone-frame pointer-events-none absolute inset-y-0 -inset-x-6 overflow-hidden sm:-inset-x-8">
+                <div className="absolute left-1/2 top-0 w-[min(92vw,520px)] max-w-none -translate-x-1/2">
+                  <img
+                    src="/images/celular.png"
+                    alt="Celular exibindo o aplicativo da MEGA+"
+                    width={563}
+                    height={1118}
+                    loading="lazy"
+                    className="app-promo-phone relative z-10 w-full"
+                  />
+                </div>
               </div>
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-16 bg-[linear-gradient(to_top,#020716_0%,rgba(2,7,22,0)_100%)] sm:h-20"
-                aria-hidden="true"
-              />
             </div>
           </Reveal>
         </div>

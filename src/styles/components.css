@@ -892,6 +892,12 @@
     box-shadow: 0 8px 20px -10px rgba(98, 203, 255, 0.9);
   }
 
+  /* Recorta o celular na altura visível e desvanece a base suavemente. */
+  .app-promo-phone-frame {
+    -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+  }
+
   .app-promo-phone {
     animation: app-promo-float 6s ease-in-out infinite;
   }

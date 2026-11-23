@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { Activity, Clock3, Headset, MapPin, RadioTower } from 'lucide-react'
 import { usePlanSelection } from '../context/PlanSelectionContext'
 import { plans } from '../data/plans'
+import { SPEED_BURST_DURATION_MS, easeOutCubic } from '../lib/speedBurst'
 
 const center = 300
 const radius = 205
@@ -52,7 +53,12 @@ function downloadEstimate(speedMb: number) {
   return minutes > 0 ? `${minutes} min ${rest} s` : `${rest} s`
 }
 
-export function SpeedRing() {
+type SpeedRingProps = {
+  /** Avisa o Hero para acelerar os fios de fundo ao trocar a velocidade. */
+  onSpeedSelect?: () => void
+}
+
+export function SpeedRing({ onSpeedSelect }: SpeedRingProps) {
   const { selectedSpeed: speed, setSelectedSpeed: setSpeed } = usePlanSelection()
   const ratio = speed / speeds[speeds.length - 1]
   const speedProgress =
@@ -81,12 +87,13 @@ export function SpeedRing() {
 
     const start = performance.now()
     const from = displayRef.current
-    const duration = 450
+    // Mesma duração e curva do turbo dos fios: a roda acompanha os neons.
+    const duration = SPEED_BURST_DURATION_MS
     let frame = 0
 
     const tick = (now: number) => {
       const progress = Math.min(1, (now - start) / duration)
-      const eased = 1 - Math.pow(1 - progress, 3)
+      const eased = easeOutCubic(progress)
       const value = Math.round(from + (speed - from) * eased)
       displayRef.current = value
       setDisplaySpeed(value)
@@ -104,6 +111,11 @@ export function SpeedRing() {
     y: center + radius * Math.sin(gaugeHeadAngle),
   }
 
+  const selectSpeed = (nextSpeed: number) => {
+    setSpeed(nextSpeed)
+    onSpeedSelect?.()
+  }
+
   const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let next = index
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % speeds.length
@@ -114,7 +126,7 @@ export function SpeedRing() {
     else return
 
     event.preventDefault()
-    setSpeed(speeds[next])
+    selectSpeed(speeds[next])
     event.currentTarget.parentElement
       ?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
       [next]?.focus()
@@ -239,7 +251,8 @@ export function SpeedRing() {
               strokeLinecap="round"
               strokeDasharray={`${arcLength} ${circumference}`}
               strokeDashoffset={arcLength * (1 - gaugeRatio)}
-              className="ring-bar-glow transition-[stroke-dashoffset] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+              style={{ transitionDuration: `${SPEED_BURST_DURATION_MS}ms` }}
+              className="ring-bar-glow transition-[stroke-dashoffset] ease-[cubic-bezier(0.22,1,0.36,1)]"
             />
             <circle
               cx={center}
@@ -251,7 +264,8 @@ export function SpeedRing() {
               strokeLinecap="round"
               strokeDasharray={`${arcLength} ${circumference}`}
               strokeDashoffset={arcLength * (1 - gaugeRatio)}
-              className="ring-bar transition-[stroke-dashoffset] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+              style={{ transitionDuration: `${SPEED_BURST_DURATION_MS}ms` }}
+              className="ring-bar transition-[stroke-dashoffset] ease-[cubic-bezier(0.22,1,0.36,1)]"
             />
           </g>
 
@@ -308,7 +322,7 @@ export function SpeedRing() {
             role="radio"
             aria-checked={speed === option}
             tabIndex={speed === option ? 0 : -1}
-            onClick={() => setSpeed(option)}
+            onClick={() => selectSpeed(option)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className={`rounded-full px-2.5 py-1.5 font-display text-xs font-bold italic transition-colors sm:px-4 sm:py-2 sm:text-sm ${
               speed === option ? 'bg-[linear-gradient(100deg,#1e6bff,#3f8cff)] text-white' : 'text-white/60 hover:text-white'

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, MapPin, ShieldCheck, Zap } from 'lucide-react'
 import { siteConfig } from '../data/site'
 import { CtaLink } from '../components/CtaLink'
@@ -10,6 +10,14 @@ import { SpeedRing } from '../components/SpeedRing'
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
+  const boostTokenRef = useRef(0)
+  const [fiberBoostSignal, setFiberBoostSignal] = useState(0)
+
+  /** A cada escolha de velocidade no velocímetro, pede um "turbo" aos fios do fundo. */
+  const handleSpeedSelect = () => {
+    boostTokenRef.current += 1
+    setFiberBoostSignal(boostTokenRef.current)
+  }
 
   useEffect(() => {
     const section = sectionRef.current
@@ -77,7 +85,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <FiberOpticBackground />
+      <FiberOpticBackground boostSignal={fiberBoostSignal} />
 
       <span className="signal-plus" style={{ fontSize: '17rem', left: '-3rem', top: '20%', transform: 'rotate(-12deg)' }} aria-hidden="true">+</span>
       <span className="signal-plus" style={{ fontSize: '10rem', right: '6%', bottom: '6%', transform: 'rotate(9deg)' }} aria-hidden="true">+</span>
@@ -131,7 +139,7 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={160}>
-            <SpeedRing />
+            <SpeedRing onSpeedSelect={handleSpeedSelect} />
           </Reveal>
         </div>
       </Container>

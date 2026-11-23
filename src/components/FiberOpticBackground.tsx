@@ -1,4 +1,12 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  SPEED_BURST_HOLD_MS,
+  SPEED_BURST_PEAK_RATE,
+  SPEED_BURST_RAMP_DOWN_MS,
+  SPEED_BURST_RAMP_UP_MS,
+  easeInOutSine,
+  easeOutCubic,
+} from '../lib/speedBurst'
 
 type Scheme = 'blue' | 'orange' | 'mix'
 
@@ -247,12 +255,18 @@ function useMediaQuery(query: string) {
   return matches
 }
 
+type FiberOpticBackgroundProps = {
+  /** Incrementado pelo Hero a cada velocidade escolhida no velocímetro. */
+  boostSignal?: number
+}
+
 /**
  * Fundo de fibra óptica do Hero: curvas em azul e laranja com rastros luminosos
  * que percorrem os caminhos SVG de forma independente. Some em
  * prefers-reduced-motion, preservando apenas as linhas estáticas.
  */
-export function FiberOpticBackground() {
+export function FiberOpticBackground({ boostSignal = 0 }: FiberOpticBackgroundProps) {
+  const svgRef = useRef<SVGSVGElement>(null)
   const isMobile = useMediaQuery('(max-width: 767px)')
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
@@ -265,8 +279,98 @@ export function FiberOpticBackground() {
   })
   const lineById = new Map(fiberLines.map((line) => [line.id, line]))
 
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!boostSignal || !svg || prefersReducedMotion) return
+
+    // Rastros CSS são animados via Web Animations; partículas usam a linha do tempo SMIL do SVG.
+    const streaks = Array.from(svg.querySelectorAll<SVGPathElement>('.fiber-flow')).flatMap((path) =>
+      path.getAnimations(),
+    )
+    const hasParticles = visibleParticles.length > 0
+    if (streaks.length === 0 && !hasParticles) return
+
+    let frame = 0
+    let startedAt = 0
+    let lastFrameAt = 0
+    let lastRate = 1
+    let timelineTime = 0
+    let timelinePaused = false
+
+    if (hasParticles) {
+      timelineTime = svg.getCurrentTime()
+      svg.pauseAnimations()
+      timelinePaused = true
+    }
+
+    const applyRate = (rate: number) => {
+      if (Math.abs(rate - lastRate) < 0.01) return
+      lastRate = rate
+      // updatePlaybackRate preserva a posição atual do traço ao mudar o ritmo.
+      streaks.forEach((animation) => {
+        if (typeof animation.updatePlaybackRate === 'function') {
+          animation.updatePlaybackRate(rate)
+        } else {
+          animation.playbackRate = rate
+        }
+      })
+    }
+
+    const restore = () => {
+      applyRate(1)
+      if (timelinePaused) {
+        svg.unpauseAnimations()
+        timelinePaused = false
+      }
+    }
+
+    const tick = (now: number) => {
+      if (!startedAt) startedAt = now
+      if (!lastFrameAt) lastFrameAt = now
+      const elapsed = now - startedAt
+      const holdEnd = SPEED_BURST_RAMP_UP_MS + SPEED_BURST_HOLD_MS
+      const total = holdEnd + SPEED_BURST_RAMP_DOWN_MS
+
+      let rate = 1
+      if (elapsed < SPEED_BURST_RAMP_UP_MS) {
+        rate = 1 + (SPEED_BURST_PEAK_RATE - 1) * easeOutCubic(elapsed / SPEED_BURST_RAMP_UP_MS)
+      } else if (elapsed < holdEnd) {
+        rate = SPEED_BURST_PEAK_RATE
+      } else if (elapsed < total) {
+        rate =
+          1 +
+          (SPEED_BURST_PEAK_RATE - 1) * (1 - easeInOutSine((elapsed - holdEnd) / SPEED_BURST_RAMP_DOWN_MS))
+      }
+
+      applyRate(rate)
+
+      if (timelinePaused) {
+        // Move as partículas no mesmo ritmo; ao fim, unpause retoma exatamente deste ponto.
+        const delta = Math.min(now - lastFrameAt, 64) / 1000
+        timelineTime += delta * rate
+        svg.setCurrentTime(timelineTime)
+      }
+
+      lastFrameAt = now
+
+      if (elapsed < total) {
+        frame = window.requestAnimationFrame(tick)
+      } else {
+        restore()
+      }
+    }
+
+    frame = window.requestAnimationFrame(tick)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      restore()
+    }
+  }, [boostSignal, prefersReducedMotion, visibleParticles.length])
+
   return (
     <svg
+      ref={svgRef}
       className="pointer-events-none absolute inset-0 z-[1] h-full w-full"
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
