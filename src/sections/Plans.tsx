@@ -32,24 +32,20 @@ export function Plans() {
           eyebrow="Nossos planos"
           align="center"
           title="A velocidade que se ajusta ao seu dia a dia."
-          description="Cada rotina pede uma conexão diferente. Compare de 350 a 650 Mbps e escolha a ideal para sua casa ou empresa."
+          description="Cada rotina pede uma conexão diferente. Compare de 350 a 1000 Mbps e escolha a ideal para sua casa ou empresa."
         />
 
         <div
           role="radiogroup"
           aria-label="Selecione um plano de internet"
-          className="mt-14 mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-14 mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {plans.map((plan, index) => (
             <Reveal
               key={plan.id}
               role="presentation"
               delay={index * 80}
-              className={`h-full ${
-                index === plans.length - 1 && plans.length % 2 === 1
-                  ? 'sm:col-span-2 sm:mx-auto sm:w-full sm:max-w-md lg:col-span-1 lg:max-w-none'
-                  : ''
-              }`}
+              className="h-full"
             >
               <PlanCard
                 plan={plan}

@@ -22,7 +22,7 @@ const homes = [
 
 const reasons: Record<number, string> = {
   350: 'Uma opção enxuta para navegar, estudar e resolver as tarefas do dia a dia.',
-  550: 'Mais velocidade para dividir a conexão entre streaming, trabalho, estudos e videochamadas.',
+  550: 'Mais velocidade para dividir a conexão entre trabalho, estudos e videochamadas.',
   650: 'Mais desempenho para muitos dispositivos conectados e uma rotina digital intensa.',
 }
 

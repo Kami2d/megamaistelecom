@@ -65,7 +65,11 @@ export function PlanCard({ plan, selected, onSelect, onNavigate }: PlanCardProps
 
       <div>
         <p
-          className={`font-display text-[clamp(4rem,6.5vw,6rem)] font-extrabold italic leading-[0.85] tracking-[-0.05em] ${
+          className={`font-display font-extrabold italic leading-[0.85] tracking-[-0.05em] ${
+            plan.speedMb >= 1000
+              ? 'text-[clamp(3rem,4.5vw,4.5rem)]'
+              : 'text-[clamp(4rem,6.5vw,6rem)]'
+          } ${
             featured ? 'text-white [text-shadow:0_0_36px_rgba(98,203,255,0.4)]' : 'text-ink-950'
           }`}
         >

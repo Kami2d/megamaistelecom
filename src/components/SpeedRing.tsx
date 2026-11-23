@@ -19,19 +19,6 @@ const gradientEnd = {
 }
 const speeds = plans.map((plan) => plan.speedMb)
 
-type Rgb = { r: number; g: number; b: number }
-const blue: Rgb = { r: 30, g: 107, b: 255 }
-const orange: Rgb = { r: 255, g: 106, b: 26 }
-const amber: Rgb = { r: 255, g: 161, b: 61 }
-
-function mixColor(from: Rgb, to: Rgb, amount: number) {
-  const t = Math.min(1, Math.max(0, amount))
-  const r = Math.round(from.r + (to.r - from.r) * t)
-  const g = Math.round(from.g + (to.g - from.g) * t)
-  const b = Math.round(from.b + (to.b - from.b) * t)
-  return `rgb(${r} ${g} ${b})`
-}
-
 const ticks = Array.from({ length: 55 }, (_, index) => {
   const angle = ((135 + index * 5) * Math.PI) / 180
   const major = index % 9 === 0
@@ -61,12 +48,6 @@ type SpeedRingProps = {
 export function SpeedRing({ onSpeedSelect }: SpeedRingProps) {
   const { selectedSpeed: speed, setSelectedSpeed: setSpeed } = usePlanSelection()
   const ratio = speed / speeds[speeds.length - 1]
-  const speedProgress =
-    speeds.length > 1
-      ? (speed - speeds[0]) / (speeds[speeds.length - 1] - speeds[0])
-      : 0
-  const barColor = mixColor(blue, orange, speedProgress)
-  const barColorLight = mixColor(orange, amber, speedProgress)
   const estimate = useMemo(() => downloadEstimate(speed), [speed])
   const [displaySpeed, setDisplaySpeed] = useState(speeds[0])
   const [ready, setReady] = useState(false)
@@ -145,12 +126,13 @@ export function SpeedRing({ onSpeedSelect }: SpeedRingProps) {
               x2={gradientEnd.x}
               y2={gradientEnd.y}
             >
+              {/* Gradiente fixo: as cores não mudam conforme a velocidade. */}
               <stop offset="0%" stopColor="#1e6bff" />
-              <stop offset="55%" stopColor={barColor} />
-              <stop offset="100%" stopColor={barColorLight} />
+              <stop offset="55%" stopColor="#ff6a1a" />
+              <stop offset="100%" stopColor="#ffa13d" />
             </linearGradient>
             <radialGradient id="ring-core">
-              <stop offset="0%" stopColor={barColor} stopOpacity="0.55" />
+              <stop offset="0%" stopColor="#1e6bff" stopOpacity="0.55" />
               <stop offset="100%" stopColor="#05102c" stopOpacity="0" />
             </radialGradient>
             <linearGradient id="ring-glass" x1="0" y1="0" x2="1" y2="1">

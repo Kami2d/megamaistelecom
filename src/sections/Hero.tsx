@@ -108,7 +108,7 @@ export function Hero() {
             </h1>
 
             <p className="mt-7 max-w-[560px] text-base leading-relaxed text-white/70 sm:text-lg">
-              Fibra de 350 a 650 Mbps para trabalhar, estudar, curtir seus
+              Fibra de 350 a 1000 Mbps para trabalhar, estudar, curtir seus
               conteúdos e manter seu negócio sempre online. Confira a cobertura
               no seu endereço.
             </p>
@@ -126,7 +126,7 @@ export function Hero() {
 
             <ul className="mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-7">
               {[
-                { icon: Zap, label: '350 a 650 Mbps' },
+                { icon: Zap, label: '350 a 1000 Mbps' },
                 { icon: ShieldCheck, label: 'Atendimento técnico 24h' },
                 { icon: MapPin, label: 'Presença no Maranhão' },
               ].map(({ icon: Icon, label }) => (
